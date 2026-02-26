@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Year 6 Science Quest | Tr. Salfa</title>
+<style>
+:root{
+  --bg1:#1a0a2e;--bg2:#3d1a6b;--bg3:#1e0f3a;
+  --bdr:rgba(255,255,255,.15);--muted:rgba(255,255,255,.55);
+  --ok:#6bcb77;--no:#ff6b6b;
+  --a1:#ff6b6b;--a2:#ffd93d;--a4:#4d96ff;--a5:#c77dff;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{min-height:100%;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif}
+body{background:linear-gradient(135deg,#1a0a2e 0%,#3d1a6b 50%,#1e0f3a 100%);min-height:100vh;color:#fff;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse at 20% 20%,rgba(199,125,255,.2) 0%,transparent 55%),radial-gradient(ellipse at 80% 80%,rgba(77,150,255,.18) 0%,transparent 55%)}
+.stars{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.star{position:absolute;background:#fff;border-radius:50%;animation:twinkle var(--d,3s) ease-in-out infinite;opacity:0}
+@keyframes twinkle{0%,100%{opacity:0;transform:scale(.5)}50%{opacity:.9;transform:scale(1)}}
+#sndBtn{position:fixed;top:12px;right:12px;z-index:300;background:rgba(255,255,255,.12);border:1.5px solid var(--bdr);border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;cursor:pointer}
+#app{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:16px 14px 28px}
+.scr{display:none;width:100%;animation:fup .35s ease}
+.scr.on{display:flex;flex-direction:column;align-items:center}
+@keyframes fup{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.logo{text-align:center;margin-bottom:16px}
+.logo .er{font-size:2rem;animation:bounce 2s infinite;margin-bottom:4px;display:block}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+.logo h1{font-size:clamp(1.9rem,7vw,3rem);font-weight:900;background:linear-gradient(135deg,#c77dff,#4d96ff,#ffd93d);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.1}
+.logo p{color:var(--muted);font-size:.85rem;margin-top:4px}
+.brand{text-align:center;margin-top:14px;color:var(--muted);font-size:.7rem;line-height:1.8}
+.brand b{color:var(--a2)}
+.card{background:rgba(255,255,255,.08);backdrop-filter:blur(16px);border:1px solid var(--bdr);border-radius:20px;padding:22px;width:100%;max-width:440px}
+.il{display:block;font-weight:800;margin-bottom:6px;color:var(--a2);font-size:.8rem;text-transform:uppercase;letter-spacing:1px}
+input[type=text]{width:100%;padding:12px 15px;background:rgba(255,255,255,.1);border:2px solid var(--bdr);border-radius:12px;color:#fff;font-size:1rem;font-weight:700;outline:none;transition:.25s;font-family:inherit;margin-bottom:14px}
+input[type=text]:focus{border-color:var(--a4);background:rgba(77,150,255,.15)}
+input[type=text]::placeholder{color:rgba(255,255,255,.3)}
+.btn{width:100%;padding:14px;border:none;border-radius:13px;font-size:1.1rem;font-weight:900;cursor:pointer;transition:all .2s}
+.btnp{background:linear-gradient(135deg,#c77dff,#4d96ff);color:#fff;box-shadow:0 7px 20px rgba(199,125,255,.35)}
+.btnp:hover{transform:translateY(-2px)}
+.btnp:active{transform:scale(.97)}
+.btns{background:rgba(255,255,255,.1);color:#fff;border:2px solid var(--bdr);font-size:1rem;padding:11px}
+.btns:hover{background:rgba(255,255,255,.17)}
+.btn-row{display:flex;gap:8px;width:100%}
+.btn-row .btn{font-size:.95rem}
+#scr-topics{max-width:900px}
+.tophd{text-align:center;margin-bottom:12px;width:100%}
+.tophd h2{font-size:clamp(1.4rem,4vw,2rem);font-weight:900;background:linear-gradient(135deg,#c77dff,#4d96ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.tophd p{color:var(--muted);font-size:.85rem;margin-top:3px}
+.mode-row{display:flex;gap:8px;margin-bottom:12px;width:100%}
+.mode-btn{flex:1;padding:10px 8px;border-radius:11px;border:2px solid var(--bdr);background:rgba(255,255,255,.07);color:var(--muted);font-size:.82rem;font-weight:800;cursor:pointer;transition:.2s;text-align:center}
+.mode-btn.sel{border-color:var(--a2);background:rgba(255,217,61,.15);color:var(--a2)}
+.tgrid{display:grid;gap:8px;width:100%;grid-template-columns:1fr}
+@media(min-width:580px){.tgrid{grid-template-columns:1fr 1fr}}
+.tdiv{grid-column:1/-1;font-size:.78rem;font-weight:900;color:rgba(255,255,255,.35);padding:8px 3px 2px;letter-spacing:1px;text-transform:uppercase;border-top:1px solid rgba(255,255,255,.07);margin-top:3px}
+.tdiv:first-child{border-top:none;margin-top:0}
+.tbtn{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.07);border:2px solid var(--bdr);border-radius:13px;padding:11px 13px;cursor:pointer;transition:all .2s;color:#fff;font-size:.88rem;font-weight:700;text-align:left;width:100%}
+.tbtn:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,.3)}
+.tbtn:active{transform:scale(.97)}
+.ti{font-size:1.5rem;min-width:30px;text-align:center}
+.tnfo{flex:1} .tn{font-size:.88rem;font-weight:800} .ts{font-size:.68rem;color:var(--muted);margin-top:1px}
+.tb{font-size:.65rem;padding:2px 7px;border-radius:20px;font-weight:900;white-space:nowrap}
+.tbtn.th2{border-color:rgba(255,107,107,.4)} .tbtn.th2:hover{background:rgba(255,107,107,.12);border-color:var(--a1)}
+.tbtn.th3{border-color:rgba(77,150,255,.4)}  .tbtn.th3:hover{background:rgba(77,150,255,.12);border-color:var(--a4)}
+.tbtn.th4{border-color:rgba(255,217,61,.4)}  .tbtn.th4:hover{background:rgba(255,217,61,.12);border-color:var(--a2)}
+.tbtn.th5{border-color:rgba(199,125,255,.4)} .tbtn.th5:hover{background:rgba(199,125,255,.12);border-color:var(--a5)}
+.tl2{background:rgba(255,107,107,.22);color:var(--a1)}
+.tl3{background:rgba(77,150,255,.22);color:var(--a4)}
+.tl4{background:rgba(255,217,61,.22);color:var(--a2)}
+.tl5{background:rgba(199,125,255,.22);color:var(--a5)}
+.scrl{overflow-y:auto;width:100%;padding-right:2px}
+@media(max-width:799px){.scrl{max-height:58vh}}
+@media(min-width:800px){.scrl{max-height:68vh}}
+.scrl::-webkit-scrollbar{width:3px}
+.scrl::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:3px}
+#scr-quiz{max-width:1100px;width:100%}
+.qhdr{display:flex;align-items:center;gap:8px;margin-bottom:10px;width:100%}
+.qbadge{flex:1;background:rgba(255,255,255,.1);border-radius:10px;padding:6px 11px;font-size:.8rem;font-weight:800;color:var(--a2);text-align:center}
+.qcnt{font-size:.92rem;font-weight:900;color:var(--muted);white-space:nowrap}
+.backbtn{background:none;border:none;color:var(--muted);cursor:pointer;font-size:1.3rem;padding:3px;line-height:1}
+.sstrip{display:flex;gap:6px;margin-bottom:10px;width:100%}
+.schip{flex:1;background:rgba(255,255,255,.08);border-radius:10px;padding:6px;text-align:center}
+.schip .sv{font-size:1.25rem;font-weight:900} .schip .sl{font-size:.58rem;color:var(--muted);text-transform:uppercase}
+.schip.sg .sv{color:var(--ok)} .schip.sy .sv{color:var(--a2)} .schip.sb .sv{color:var(--a4)}
+.twrap{margin-bottom:10px;width:100%}
+.tbarbg{background:rgba(255,255,255,.1);border-radius:20px;height:10px;overflow:hidden}
+.tbar{height:100%;border-radius:20px;transition:width 1s linear,background .8s;background:linear-gradient(90deg,#c77dff,#4d96ff)}
+.tbar.warn{background:linear-gradient(90deg,#ffd93d,#ff6b6b)}
+.tnum{text-align:right;font-size:1.3rem;font-weight:900;margin-top:2px;transition:color .4s}
+.tnum.warn{color:var(--a1);animation:tp .5s infinite}
+@keyframes tp{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
+.qbody{display:flex;flex-direction:column;gap:10px;width:100%}
+@media(min-width:780px){
+  .qbody{flex-direction:row;align-items:flex-start;gap:16px}
+  .qleft{flex:1.1;display:flex;flex-direction:column;gap:10px;min-width:0}
+  .qright{flex:.95;display:flex;flex-direction:column;gap:10px;min-width:0}
+}
+.qleft,.qright{display:flex;flex-direction:column;gap:10px;width:100%}
+.qcard{background:rgba(255,255,255,.08);border:2px solid var(--bdr);border-radius:16px;padding:18px;min-height:95px;display:flex;align-items:center;width:100%}
+.qtxt{font-size:clamp(.95rem,2.5vw,1.15rem);font-weight:800;line-height:1.55;text-align:center;width:100%}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:7px;width:100%}
+.obtn{padding:12px 9px;border-radius:12px;border:2px solid var(--bdr);background:rgba(255,255,255,.07);color:#fff;font-size:.84rem;font-weight:800;cursor:pointer;transition:all .2s;text-align:center;line-height:1.35;position:relative;min-height:62px;display:flex;align-items:center;justify-content:center;font-family:inherit}
+.obtn:hover:not(.dis){background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.3);transform:translateY(-1px)}
+.obtn:active{transform:scale(.95)}
+.obtn.correct{background:rgba(107,203,119,.3);border-color:var(--ok);animation:pok .5s}
+.obtn.wrong{background:rgba(255,107,107,.3);border-color:var(--a1);animation:shk .4s}
+.obtn.revc{background:rgba(107,203,119,.2);border-color:var(--ok)}
+.obtn.dis{pointer-events:none}
+.olbl{position:absolute;top:4px;left:6px;font-size:.78rem;font-weight:900;opacity:.4}
+@keyframes pok{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+@keyframes shk{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.fbcard{border-radius:16px;padding:14px;animation:sup .35s ease;display:none;width:100%}
+.fbcard.on{display:block}
+.fbcard.correct{background:rgba(107,203,119,.17);border:2px solid var(--ok)}
+.fbcard.wrong{background:rgba(255,107,107,.12);border:2px solid rgba(255,107,107,.45)}
+@keyframes sup{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.fbe{font-size:1.9rem;text-align:center;margin-bottom:5px}
+.fbt{font-size:1.1rem;font-weight:900;text-align:center;margin-bottom:5px}
+.fbt.correct{color:var(--ok)} .fbt.wrong{color:var(--a1)}
+.fbtx{font-size:.82rem;line-height:1.65;color:rgba(255,255,255,.87);text-align:center}
+.nxtwrap{display:none;width:100%}
+.nxtwrap.on{display:block}
+.hint{font-size:.68rem;color:var(--muted);text-align:center;margin-top:4px}
+#scr-result{max-width:600px}
+.rh{text-align:center;margin-bottom:16px;width:100%}
+.rtr{font-size:4rem;animation:tin .7s ease}
+@keyframes tin{0%{transform:scale(0)rotate(-20deg)}70%{transform:scale(1.2)rotate(5deg)}100%{transform:scale(1)rotate(0)}}
+.rn{font-size:1.55rem;font-weight:900;margin-top:8px}
+.rs{font-size:3.4rem;font-weight:900;background:linear-gradient(135deg,#c77dff,#4d96ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.1}
+.rsb{color:var(--muted);font-size:.82rem;margin-top:3px}
+.sgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:13px;width:100%}
+.sbox{background:rgba(255,255,255,.07);border-radius:13px;padding:13px;text-align:center}
+.sbox .sv{font-size:1.7rem;font-weight:900} .sbox .sl{font-size:.68rem;color:var(--muted);margin-top:2px}
+.sbox.sg{border:2px solid rgba(107,203,119,.35)} .sbox.sg .sv{color:var(--ok)}
+.sbox.sb{border:2px solid rgba(77,150,255,.35)}  .sbox.sb .sv{color:var(--a4)}
+.sbox.sy{border:2px solid rgba(255,217,61,.35)}  .sbox.sy .sv{color:var(--a2)}
+.sbox.sp{border:2px solid rgba(199,125,255,.35)} .sbox.sp .sv{color:var(--a5)}
+.ibanner{border-radius:16px;padding:14px;text-align:center;margin-bottom:14px;width:100%;animation:fup .5s .2s both}
+.ibanner.up{background:linear-gradient(135deg,rgba(107,203,119,.22),rgba(77,150,255,.14));border:2px solid var(--ok)}
+.ibanner.dn{background:rgba(255,107,107,.12);border:2px solid rgba(255,107,107,.38)}
+.ibe{font-size:2.4rem;margin-bottom:4px} .ibt{font-size:1.2rem;font-weight:900}
+.ibtx{font-size:.78rem;color:var(--muted);margin-top:3px}
+#scr-lb{max-width:600px}
+.lbhd{text-align:center;margin-bottom:14px;width:100%}
+.lbhd h2{font-size:1.6rem;font-weight:900;background:linear-gradient(135deg,#ffd93d,#c77dff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.lbtable{width:100%;border-collapse:collapse;margin-bottom:14px}
+.lbtable th{background:rgba(255,255,255,.1);padding:9px 10px;font-size:.75rem;font-weight:900;text-transform:uppercase;letter-spacing:.5px;color:var(--a2)}
+.lbtable td{padding:8px 10px;font-size:.82rem;font-weight:700;border-bottom:1px solid rgba(255,255,255,.07);text-align:center}
+.lbtable tr:first-child td{color:#ffd93d}
+.lbtable tr:nth-child(2) td{color:#c0c0c0}
+.lbtable tr:nth-child(3) td{color:#cd7f32}
+.lbempty{text-align:center;color:var(--muted);padding:20px;font-size:.9rem}
+.screeny{background:linear-gradient(135deg,rgba(199,125,255,.2),rgba(77,150,255,.2));border:2px solid rgba(199,125,255,.4);border-radius:16px;padding:16px;margin-bottom:14px;width:100%;text-align:center}
+.screeny .se{font-size:2.5rem;margin-bottom:6px}
+.screeny .st{font-size:1rem;font-weight:900;color:var(--a5);margin-bottom:4px}
+.screeny .sd{font-size:.8rem;color:rgba(255,255,255,.75);line-height:1.6}
+.cfp{position:fixed;pointer-events:none;z-index:999;animation:cff var(--d) ease-in forwards}
+@keyframes cff{0%{transform:translateY(-20px)rotate(0);opacity:1}100%{transform:translateY(110vh)rotate(720deg);opacity:0}}
+
+/* ══ WHATSAPP OPEN IN BROWSER BANNER ═══════════════════ */
+#wa-banner{display:none;position:fixed;top:0;left:0;right:0;z-index:99999;background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;padding:10px 14px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,.4)}
+#wa-banner .wa-msg{font-size:.82rem;font-weight:700;margin-bottom:6px;line-height:1.4}
+#wa-banner .wa-btn{display:inline-block;background:#fff;color:#128C7E;font-size:.82rem;font-weight:900;padding:7px 18px;border-radius:20px;border:none;cursor:pointer;text-decoration:none}
+#wa-banner.show{display:block}
+body.wa-open{padding-top:80px}
+</style>
+</head>
+<body>
+<!-- WhatsApp In-App Browser Banner -->
+<div id="wa-banner">
+  <div class="wa-msg">⚠️ Buttons may not work in WhatsApp. For the best experience, open in your browser.</div>
+  <button class="wa-btn" onclick="openInBrowser()">🌐 Open in Browser</button>
+</div>
+
+<div class="stars" id="stars"></div>
+<button id="sndBtn" onclick="toggleSnd()">🔊</button>
+
+<!-- ═══ CUSTOM MODAL — replaces confirm/alert (blocked by WhatsApp browser) ═══ -->
+<div id="_modal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.7);align-items:center;justify-content:center;padding:20px">
+  <div style="background:linear-gradient(135deg,#1a0a2e,#3a1560);border:2px solid rgba(255,255,255,.2);border-radius:20px;padding:26px 22px;max-width:310px;width:100%;text-align:center;animation:fup .3s ease">
+    <div id="_mIcon" style="font-size:2.2rem;margin-bottom:8px"></div>
+    <div id="_mMsg" style="font-size:1.05rem;font-weight:900;margin-bottom:6px;color:#fff"></div>
+    <div id="_mSub" style="font-size:.82rem;color:rgba(255,255,255,.6);margin-bottom:18px;line-height:1.5"></div>
+    <div style="display:flex;gap:9px">
+      <button id="_mCancel" style="flex:1;padding:11px;border:2px solid rgba(255,255,255,.2);border-radius:12px;background:rgba(255,255,255,.1);color:#fff;font-size:.95rem;font-weight:900;cursor:pointer" onclick="document.getElementById('_modal').style.display='none'">Cancel</button>
+      <button id="_mOk" style="flex:1;padding:11px;border:none;border-radius:12px;background:linear-gradient(135deg,#c77dff,#4d96ff);color:#fff;font-size:.95rem;font-weight:900;cursor:pointer"></button>
+    </div>
+  </div>
+</div>
+
+<div id="app">
+
+<!-- WELCOME -->
+<div class="scr on" id="scr-welcome">
+  <div class="logo">
+    <span class="er">⚡🌍🌙💊🔧</span>
+    <h1>Science Quest</h1>
+    <p>Year 6 · Brunei Primary School</p>
+  </div>
+  <div class="card">
+    <label class="il">👤 Your Name</label>
+    <input type="text" id="pname" placeholder="Enter your name…" maxlength="24" onkeydown="if(event.key==='Enter')goTopics()">
+    <button class="btn btnp" onclick="goTopics()">Let's Go! 🚀</button>
+    <div style="margin-top:10px">
+      <button class="btn btns" onclick="goLB()">🏆 Leaderboard</button>
+    </div>
+  </div>
+  <div class="brand">An initiative by <b>Tr. Salfa</b><br>SR Perpindahan Kg. Lambak Kanan Jalan 10, Cluster 3</div>
+</div>
+
+<!-- TOPICS -->
+<div class="scr" id="scr-topics">
+  <div class="tophd">
+    <h2>📚 Choose a Topic</h2>
+    <p id="wmsg">Pick a topic to start!</p>
+  </div>
+  <div class="mode-row" style="max-width:900px;width:100%">
+    <button class="mode-btn" id="mq5" onclick="setMode(5)">⚡ Quick (5 Qs)</button>
+    <button class="mode-btn sel" id="mAll" onclick="setMode(0)">📖 Full Quiz</button>
+  </div>
+  <div class="scrl" style="max-width:900px">
+    <div class="tgrid" id="tgrid"></div>
+  </div>
+  <div class="brand" style="margin-top:10px">An initiative by <b>Tr. Salfa</b> · SR Perpindahan Kg. Lambak Kanan Jalan 10, Cluster 3</div>
+</div>
+
+<!-- QUIZ -->
+<div class="scr" id="scr-quiz">
+  <div class="qhdr">
+    <button class="backbtn" onclick="confBack()">⬅</button>
+    <div class="qbadge" id="qbadge">Topic</div>
+    <div class="qcnt" id="qcnt">Q1/8</div>
+  </div>
+  <div class="sstrip">
+    <div class="schip sg"><div class="sv" id="s0">0</div><div class="sl">✅ Correct</div></div>
+    <div class="schip sy"><div class="sv" id="s1">0</div><div class="sl">🔥 Streak</div></div>
+    <div class="schip sb"><div class="sv" id="s2">–</div><div class="sl">⚡ Avg s</div></div>
+  </div>
+  <div class="twrap">
+    <div class="tbarbg"><div class="tbar" id="tbar"></div></div>
+    <div class="tnum" id="tnum">30</div>
+  </div>
+  <div class="qbody">
+    <div class="qleft">
+      <div class="qcard"><div class="qtxt" id="qtxt">Loading…</div></div>
+      <div class="opts" id="opts"></div>
+    </div>
+    <div class="qright">
+      <div class="fbcard" id="fbcard">
+        <div class="fbe" id="fbe"></div>
+        <div class="fbt" id="fbt"></div>
+        <div class="fbtx" id="fbtx"></div>
+      </div>
+      <div class="nxtwrap" id="nxtwrap">
+        <button class="btn btnp" onclick="nextQ()">Next Question ➡</button>
+        <div class="hint">Tap above to continue</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RESULT -->
+<div class="scr" id="scr-result">
+  <div class="rh">
+    <div class="rtr" id="rtr">🏆</div>
+    <div class="rn" id="rn"></div>
+    <div class="rs" id="rs"></div>
+    <div class="rsb" id="rsb"></div>
+  </div>
+  <div class="sgrid">
+    <div class="sbox sg"><div class="sv" id="r0">0</div><div class="sl">Correct</div></div>
+    <div class="sbox sb"><div class="sv" id="r1">0</div><div class="sl">Wrong</div></div>
+    <div class="sbox sy"><div class="sv" id="r2">–</div><div class="sl">Avg Secs</div></div>
+    <div class="sbox sp"><div class="sv" id="r3">0</div><div class="sl">Best Streak</div></div>
+  </div>
+  <div class="ibanner" id="ibanner">
+    <div class="ibe" id="ibe"></div>
+    <div class="ibt" id="ibt"></div>
+    <div class="ibtx" id="ibtx"></div>
+  </div>
+  <div class="screeny">
+    <div class="se">📸</div>
+    <div class="st">Share Your Result!</div>
+    <div class="sd" id="shareText"></div>
+  </div>
+  <div class="btn-row" style="margin-bottom:8px">
+    <button class="btn btns" onclick="goTopics()" style="flex:1">📚 Topics</button>
+    <button class="btn btnp" onclick="retry()" style="flex:1">🔄 Try Again</button>
+  </div>
+  <button class="btn btns" onclick="goLB()">🏆 View Leaderboard</button>
+  <div class="brand" style="margin-top:14px">An initiative by <b>Tr. Salfa</b> · SR Perpindahan Kg. Lambak Kanan Jalan 10, Cluster 3</div>
+</div>
+
+<!-- LEADERBOARD -->
+<div class="scr" id="scr-lb">
+  <div class="lbhd">
+    <h2>🏆 Leaderboard</h2>
+    <p style="color:var(--muted);font-size:.82rem;margin-top:3px">Top scores on this device</p>
+  </div>
+  <div style="width:100%;max-width:580px;overflow-x:auto">
+    <table class="lbtable" id="lbtable"><thead><tr><th>#</th><th>Name</th><th>Topic</th><th>Score</th><th>Avg Speed</th><th>Date</th></tr></thead><tbody id="lbbody"></tbody></table>
+  </div>
+  <div class="btn-row" style="max-width:440px;width:100%">
+    <button class="btn btns" onclick="show('welcome')" style="flex:1">🏠 Home</button>
+    <button class="btn btns" onclick="clearLB()" style="flex:1;color:var(--a1)">🗑️ Clear</button>
+  </div>
+  <div class="brand" style="margin-top:14px">An initiative by <b>Tr. Salfa</b> · SR Perpindahan Kg. Lambak Kanan Jalan 10, Cluster 3</div>
+</div>
+
+</div><!-- /app -->
+
+<script>
+/* ══ CUSTOM MODAL HELPERS ══════════════════════════════ */
+function _modal(icon,msg,sub,okLabel,onOk,showCancel){
+  document.getElementById('_mIcon').textContent=icon;
+  document.getElementById('_mMsg').textContent=msg;
+  document.getElementById('_mSub').textContent=sub;
+  document.getElementById('_mOk').textContent=okLabel;
+  document.getElementById('_mCancel').style.display=showCancel?'block':'none';
+  var m=document.getElementById('_modal');
+  m.style.display='flex';
+  document.getElementById('_mOk').onclick=function(){m.style.display='none';onOk();};
+}
+function _nameError(){
+  var el=document.getElementById('pname');
+  el.style.borderColor='#ff6b6b';
+  el.placeholder='Please enter your name first! 😊';
+  el.focus();
+  setTimeout(function(){el.style.borderColor='';el.placeholder='Enter your name…';},2500);
+}
+
+/* ══ SOUND ENGINE ══════════════════════════════════════ */
+let AC=null,sOn=true;
+function gac(){
+  if(!AC)AC=new(window.AudioContext||window.webkitAudioContext)();
+  if(AC.state==='suspended')AC.resume();
+  return AC;
+}
+function toggleSnd(){sOn=!sOn;document.getElementById('sndBtn').textContent=sOn?'🔊':'🔇';}
+function beep(t){
+  if(!sOn)return;
+  try{const c=gac();
+    if(t==='ok'){
+      [[523.25,0,.3],[659.25,.09,.26],[783.99,.18,.24],[1046.5,.27,.32]].forEach(([f,d,dr])=>{
+        const o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);
+        o.type='sine';o.frequency.value=f;
+        g.gain.setValueAtTime(0,c.currentTime+d);g.gain.linearRampToValueAtTime(.3,c.currentTime+d+.03);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+d+dr);
+        o.start(c.currentTime+d);o.stop(c.currentTime+d+dr+.02);
+      });
+    }else if(t==='no'){
+      [[310,0,.22],[240,.13,.22],[170,.26,.22]].forEach(([f,d,dr])=>{
+        const o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);
+        o.type='sawtooth';o.frequency.value=f;
+        g.gain.setValueAtTime(0,c.currentTime+d);g.gain.linearRampToValueAtTime(.2,c.currentTime+d+.04);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+d+dr);
+        o.start(c.currentTime+d);o.stop(c.currentTime+d+dr+.02);
+      });
+    }else if(t==='tick'){
+      const o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);
+      o.type='sine';o.frequency.value=880;
+      g.gain.setValueAtTime(0,c.currentTime);g.gain.linearRampToValueAtTime(.12,c.currentTime+.008);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.055);
+      o.start(c.currentTime);o.stop(c.currentTime+.06);
+    }else if(t==='fan'){
+      [523,659,784,1047,1319].forEach((f,i)=>{
+        const o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);
+        o.type='triangle';o.frequency.value=f;const d=i*.09;
+        g.gain.setValueAtTime(0,c.currentTime+d);g.gain.linearRampToValueAtTime(.35,c.currentTime+d+.04);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+d+.4);
+        o.start(c.currentTime+d);o.stop(c.currentTime+d+.42);
+      });
+    }else if(t==='clk'){
+      const o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);
+      o.type='sine';o.frequency.value=600;
+      g.gain.setValueAtTime(0,c.currentTime);g.gain.linearRampToValueAtTime(.1,c.currentTime+.007);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.05);
+      o.start(c.currentTime);o.stop(c.currentTime+.055);
+    }else if(t==='to'){
+      [0,.22].forEach(d=>{
+        const o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);
+        o.type='square';o.frequency.value=430;
+        g.gain.setValueAtTime(0,c.currentTime+d);g.gain.linearRampToValueAtTime(.16,c.currentTime+d+.02);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+d+.17);
+        o.start(c.currentTime+d);o.stop(c.currentTime+d+.19);
+      });
+    }
+  }catch(e){}
+}
+
+/* ══ STARS ═════════════════════════════════════════════ */
+(()=>{const c=document.getElementById('stars');for(let i=0;i<60;i++){const s=document.createElement('div');s.className='star';const z=Math.random()*2.5+1;s.style.cssText=`width:${z}px;height:${z}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${Math.random()*3+2}s;animation-delay:${Math.random()*6}s`;c.appendChild(s);}})();
+
+/* ══════════════════════════════════════════════════════
+   YEAR 6 TOPICS DATA  —  based on Brunei CDD Syllabus
+   Theme 2: Energy & Forces (Electricity)
+   Theme 3: Cycles (Solar System & Water Conservation)
+   Theme 4: Personal Health & Environment
+   Theme 5: Systems (Electrical, Mechanical, Machines)
+══════════════════════════════════════════════════════ */
+const TOPICS=[
+
+  /* ─────────── THEME 2: ELECTRICITY ─────────── */
+  {id:'y6t2a',th:2,icon:'⚡',name:'Electrical Energy',sub:'Forms, sources & saving electricity',qs:[
+    {q:"Electricity is a form of…",o:["Water","Energy","Material","Substance"],a:1,e:"Electricity is a form of ENERGY. Like heat, light, and sound, electrical energy can be converted into other forms to do useful work."},
+    {q:"When a television is switched on, electrical energy converts to…",o:["Only light energy","Only sound energy","Both sound energy AND light energy","Heat energy only"],a:2,e:"A television converts electrical energy into both SOUND energy (speakers) and LIGHT energy (screen). This is a common energy conversion example."},
+    {q:"Which is a source of electricity?",o:["A candle","A power station","A piece of wood","A stone"],a:1,e:"A POWER STATION is a source of electricity. Other sources include batteries (dry cells) and solar cells. Candles, wood, and stones do not generate electricity."},
+    {q:"Which of these can GENERATE electricity from sunlight?",o:["Dry cell battery","Solar cell","Power station","Wire"],a:1,e:"A SOLAR CELL converts sunlight directly into electrical energy. Solar cells are used in calculators, solar panels on rooftops, and satellites."},
+    {q:"Which is the BEST way to save electricity at home?",o:["Leave all lights on all night","Switch off lights and fans when leaving a room","Use more electrical appliances","Never use solar cells"],a:1,e:"Switching off lights and fans when not in use is a key way to SAVE electricity. This reduces energy bills and helps protect the environment."},
+    {q:"A dry cell is an example of a…",o:["Power station","Solar source","Battery (portable source of electricity)","Conductor"],a:2,e:"A DRY CELL is a type of battery — a portable, chemical source of electrical energy. It is used in torches, remote controls, and toys."},
+    {q:"Which appliance converts electrical energy to HEAT energy?",o:["Electric fan","Electric bulb","Electric iron","Radio"],a:2,e:"An electric IRON converts electrical energy into HEAT energy for ironing clothes. An electric fan converts to movement energy; a bulb converts to light; a radio converts to sound."},
+    {q:"Why is it important to save electricity?",o:["So that we can use more appliances","To conserve energy resources and reduce pollution","Electricity is free so there's no reason","To make appliances work faster"],a:1,e:"Saving electricity helps CONSERVE energy resources (like coal and gas used at power stations) and REDUCES pollution and greenhouse gas emissions that harm the environment."},
+  ]},
+
+  {id:'y6t2b',th:2,icon:'🔌',name:'Electric Circuits',sub:'Complete circuits, switches & symbols',qs:[
+    {q:"For a bulb to light up, the electric circuit must be…",o:["Open (broken)","Complete (closed)","Wet","Very long"],a:1,e:"Electricity can only flow in a COMPLETE (closed) circuit. If there is a gap anywhere in the circuit, the current cannot flow and the bulb will not light up."},
+    {q:"What does it mean to 'switch ON' a circuit?",o:["To open the circuit","To break the wire","To close the circuit","To remove the battery"],a:2,e:"To SWITCH ON means to CLOSE the circuit — the switch closes a gap, completing the path for electricity to flow from one terminal of the battery all the way around to the other."},
+    {q:"Which components are needed to set up a SIMPLE electric circuit?",o:["Battery, bulb and wires","Water, pump and pipes","Candle, match and holder","Motor, fan and plug"],a:0,e:"A simple electric circuit requires a BATTERY (energy source), a BULB (or other component), and WIRES (to connect everything in a complete loop)."},
+    {q:"What happens when you ADD more bulbs in a series circuit?",o:["Each bulb gets brighter","Each bulb gets dimmer","The battery charges faster","Nothing changes"],a:1,e:"In a SERIES circuit, adding more bulbs means the same current must power more bulbs — so each bulb receives less energy and becomes DIMMER."},
+    {q:"What happens when you ADD more batteries in a series circuit?",o:["The bulbs get dimmer","The circuit breaks","The bulbs get brighter","The batteries cancel out"],a:2,e:"Adding more BATTERIES in series increases the voltage (electrical push) in the circuit, so more current flows and the bulbs glow BRIGHTER."},
+    {q:"In a circuit diagram, what symbol is used for a battery?",o:["A circle with a cross","Two short and long parallel lines (long = positive, short = negative)","A wavy line","A rectangle"],a:1,e:"A battery is represented by TWO PARALLEL LINES — one long (positive terminal) and one short (negative terminal). Each additional cell adds another pair of lines."},
+    {q:"A switch in a circuit acts like a…",o:["Permanent connection","Controllable gap that opens or closes the circuit","Source of electricity","Type of wire"],a:1,e:"A SWITCH is a component that can open or close a gap in the circuit. Open switch = broken circuit (OFF). Closed switch = complete circuit (ON)."},
+    {q:"What is the path that electricity follows in a complete circuit?",o:["From the positive terminal only","From negative terminal to bulb only","From one terminal of the battery, through the circuit, back to the other terminal","Electricity does not follow a path"],a:2,e:"Electricity flows from one TERMINAL (end) of the battery, through all the components in the circuit (wires, bulb, switch), and back to the OTHER TERMINAL — forming a complete loop."},
+  ]},
+
+  {id:'y6t2c',th:2,icon:'🔦',name:'Conductors & Non-Conductors',sub:'Materials that allow or block electricity',qs:[
+    {q:"A CONDUCTOR of electricity is a material that…",o:["Blocks electricity from passing through","Allows electricity to pass through it","Stores electricity","Produces electricity"],a:1,e:"A CONDUCTOR is a material that ALLOWS electricity to pass through it. Most metals (copper, iron, steel, aluminium) are good conductors."},
+    {q:"Which of the following is a CONDUCTOR of electricity?",o:["Rubber","Plastic","Copper wire","Wood"],a:2,e:"COPPER is an excellent conductor of electricity, which is why electric wires are made of copper. Rubber, plastic, and wood are non-conductors (insulators)."},
+    {q:"A NON-CONDUCTOR (insulator) of electricity…",o:["Allows electricity to pass through","Does not allow electricity to pass through","Produces more electricity","Increases the brightness of bulbs"],a:1,e:"A NON-CONDUCTOR (also called an insulator) does NOT allow electricity to pass through it. Examples include rubber, plastic, wood, and glass."},
+    {q:"Why are electric wires covered with PLASTIC or RUBBER?",o:["To make them look nice","To make them heavier","For safety — plastic/rubber are non-conductors that prevent electric shocks","To conduct electricity better"],a:2,e:"The plastic or rubber coating on wires is a NON-CONDUCTOR. It insulates the wire so that people cannot accidentally touch the live conductor and get an electric shock — a crucial safety measure."},
+    {q:"Which material would COMPLETE a circuit and light a bulb?",o:["Plastic ruler","Steel spoon","Wooden pencil","Rubber eraser"],a:1,e:"A STEEL SPOON is a metal — metals are conductors that allow electricity to flow, completing the circuit and lighting the bulb. Plastic, wood, and rubber are insulators."},
+    {q:"Which safety rule is MOST important when using home electrical appliances?",o:["Always use wet hands for better grip","Never touch electrical appliances or sockets with wet hands","Keep all appliances plugged in at all times","Use appliances near water for convenience"],a:1,e:"NEVER touch electrical appliances or sockets with WET HANDS. Water conducts electricity and can cause serious electric shocks. Always dry your hands before using electrical appliances."},
+    {q:"In a circuit test, the bulb DOES NOT LIGHT UP when testing a material. This means the material is a…",o:["Good conductor","Non-conductor (insulator)","Battery","Switch"],a:1,e:"If the bulb does NOT light up when a material is placed in the circuit, it means the material is a NON-CONDUCTOR (insulator) — electricity cannot flow through it."},
+  ]},
+
+  /* ─────────── THEME 3: SOLAR SYSTEM & WATER ─────────── */
+  {id:'y6t3a',th:3,icon:'🌍',name:'The Earth & The Sun',sub:'Rotation, revolution & day and night',qs:[
+    {q:"What causes DAY and NIGHT on Earth?",o:["The Moon blocking the Sun","The Earth rotating on its own axis","The Sun moving around the Earth","Clouds covering the Sun"],a:1,e:"Day and night are caused by the ROTATION of the Earth on its own axis. The side facing the Sun experiences day; the side facing away experiences night."},
+    {q:"How long does ONE complete ROTATION of the Earth take?",o:["12 hours","24 hours (1 day)","28 days","365 days"],a:1,e:"The Earth takes 24 HOURS (1 day) to complete one full rotation on its axis. This is why we have 24 hours in a day."},
+    {q:"In which direction does the SUN appear to rise?",o:["West","North","South","East"],a:3,e:"The Sun rises in the EAST and sets in the WEST. This is because the Earth rotates from west to east — so the Sun appears to move from east to west across the sky."},
+    {q:"What is the difference between ROTATION and REVOLUTION?",o:["They are exactly the same","Rotation is spinning on its own axis; revolution is orbiting around another object","Revolution is spinning; rotation is orbiting","Neither involves movement"],a:1,e:"ROTATION = Earth spinning on its own axis (causes day/night, takes 24 hours). REVOLUTION = Earth orbiting around the Sun (causes years, takes ~365 days)."},
+    {q:"How long does it take the Earth to complete ONE REVOLUTION around the Sun?",o:["24 hours","28 days","365 days (approximately 1 year)","100 years"],a:2,e:"The Earth takes approximately 365 DAYS (1 year) to complete one revolution around the Sun. This is why our calendar year has 365 days (366 in a leap year)."},
+    {q:"While the Earth rotates on its axis, it is ALSO…",o:["Staying perfectly still in space","Revolving around the Moon","Revolving around the Sun simultaneously","Shrinking in size"],a:2,e:"The Earth does BOTH movements simultaneously — it ROTATES on its axis (causing day and night) while also REVOLVING around the Sun (causing years and seasons)."},
+    {q:"When it is DAYTIME in Brunei, what is it on the OPPOSITE side of the Earth?",o:["Also daytime","Twilight","Night-time","Sunrise"],a:2,e:"When one side of the Earth faces the Sun (daytime), the opposite side faces away from the Sun — so it is NIGHT-TIME there. This is the result of Earth's rotation."},
+  ]},
+
+  {id:'y6t3b',th:3,icon:'🌙',name:'The Moon & The Earth',sub:'Moon revolution and phases',qs:[
+    {q:"What does the Moon do in relation to the Earth?",o:["The Moon stays perfectly still","The Moon rotates the Sun directly","The Moon revolves around the Earth","The Moon rotates on its axis only"],a:2,e:"The Moon REVOLVES around the Earth. It is Earth's natural satellite and takes approximately 28 days to complete one full orbit around the Earth."},
+    {q:"How long does it take the Moon to complete ONE revolution around the Earth?",o:["24 hours","7 days","Approximately 28 days","365 days"],a:2,e:"The Moon takes approximately 28 DAYS (about 1 month) to revolve once around the Earth. This is why we have roughly 12 months in a year."},
+    {q:"What causes the PHASES of the Moon (full moon, half moon, etc.)?",o:["The Earth's shadow on the Moon","The Moon producing its own light","The Moon's movement around the Earth changing how much of its lit side we see","Clouds blocking the Moon"],a:2,e:"The Moon's PHASES are caused by its movement around the Earth — as it orbits, we see different amounts of its sunlit surface from Earth, creating the cycle of phases."},
+    {q:"Which phase shows the ENTIRE lit surface of the Moon?",o:["New Moon","Crescent Moon","Half Moon","Full Moon"],a:3,e:"A FULL MOON occurs when the Moon is on the opposite side of the Earth from the Sun — we can see its entire illuminated (lit) surface. This happens approximately every 28 days."},
+    {q:"During a NEW MOON, how much of the Moon can we see?",o:["All of it — it is fully lit","Half of it","A thin crescent only","None — the lit side faces away from us"],a:3,e:"During a NEW MOON, the Moon is between the Earth and the Sun — its lit side faces AWAY from us, so we cannot see it. The sky appears to have no moon."},
+    {q:"The four main phases of the Moon recognised in Year 6 are…",o:["Rising, setting, high, low","Spring, summer, autumn, winter","Full moon, new moon, half moon and crescent moon","Bright, dim, red, blue"],a:2,e:"The four main phases are: FULL MOON (entire lit surface visible), NEW MOON (not visible), HALF MOON (half visible), and CRESCENT MOON (thin sliver visible)."},
+  ]},
+
+  {id:'y6t3c',th:3,icon:'🪐',name:'Our Solar System',sub:'Planets, stars and objects in space',qs:[
+    {q:"What is the SUN?",o:["A planet","A moon","A star that gives out heat and light energy","A satellite made by humans"],a:2,e:"The Sun is a STAR — a massive ball of hot gas that produces and gives out enormous amounts of HEAT and LIGHT energy. It is the centre of our Solar System."},
+    {q:"How many planets are in our Solar System?",o:["7","8","9","10"],a:1,e:"There are EIGHT planets in our Solar System: Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, and Neptune. (Pluto was reclassified as a dwarf planet in 2006.)"},
+    {q:"What do ALL planets in our Solar System do?",o:["Produce their own light","Revolve around the Sun","Rotate in the same direction","Have moons"],a:1,e:"All eight planets REVOLVE AROUND THE SUN. The Sun's gravity keeps them in their orbits. Each planet takes a different amount of time to complete one revolution."},
+    {q:"Why does life exist on Earth but not on most other planets?",o:["Earth is the biggest planet","Earth is the closest planet to the Sun","Earth's position from the Sun and its atmosphere allow the right conditions for life","Earth has the most moons"],a:2,e:"Life exists on Earth because of its DISTANCE FROM THE SUN (not too hot, not too cold) and the ATMOSPHERE around it (providing oxygen to breathe and protection from harmful radiation)."},
+    {q:"Which of these is the CORRECT order of planets from the Sun?",o:["Earth, Venus, Mercury, Mars","Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune","Jupiter, Saturn, Earth, Mars, Mercury, Venus, Uranus, Neptune","Neptune, Uranus, Saturn, Jupiter, Mars, Earth, Venus, Mercury"],a:1,e:"The correct order from the Sun is: Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune. A helpful mnemonic: My Very Energetic Mother Just Served Us Noodles."},
+    {q:"Asteroids and comets are objects in the Solar System that appear in…",o:["Random patterns only","Predictable cycles","Fixed positions","Only near Earth"],a:1,e:"Asteroids and comets are other objects in the Solar System that appear in CYCLES — they follow predictable orbital paths, returning at regular intervals. Famous example: Halley's Comet."},
+    {q:"The Sun is much LARGER than the Earth. Approximately how many Earths could fit inside the Sun?",o:["About 10","About 100","About 1,000","Over 1,000,000 (one million)"],a:3,e:"The Sun is so enormous that over ONE MILLION Earths could fit inside it. The Sun's diameter is about 109 times that of Earth — it makes Earth look like a tiny dot in comparison."},
+  ]},
+
+  {id:'y6t3d',th:3,icon:'💧',name:'Conservation of Water',sub:'Importance, uses and saving water',qs:[
+    {q:"Why is water IMPORTANT for living things?",o:["It is only used for swimming","All living things need water for survival — drinking, cooking, cleaning and biological processes","Water is only important for plants","Water is not really important"],a:1,e:"Water is essential for ALL living things. Humans need it for drinking, cooking, cleaning, and bathing. Plants need it to grow. Animals need it to survive. Without water, life cannot exist."},
+    {q:"Which of these is a USE of water?",o:["Making fire","Agriculture (growing crops)","Making plastic","Generating sound"],a:1,e:"AGRICULTURE (growing crops and farming) is a major use of water. Other uses include drinking, cooking, washing, bathing, swimming, sailing, and generating hydro-electricity."},
+    {q:"What is CONSERVATION of water?",o:["Using as much water as possible every day","Using water carefully and avoiding waste to preserve this precious resource","Collecting water in buckets only","Letting taps run freely"],a:1,e:"Water CONSERVATION means using water CAREFULLY and reducing waste. Since clean water is a limited resource, conserving it ensures there is enough for future generations and ecosystems."},
+    {q:"Which action CONSERVES water?",o:["Leaving the tap running while brushing teeth","Taking very long showers every day","Fixing leaking taps immediately","Watering the garden during the hottest part of the day"],a:2,e:"FIXING LEAKING TAPS immediately saves water — even a small drip can waste thousands of litres per year. Other conservation tips: shorter showers, turning off taps, collecting rainwater."},
+    {q:"Hydro-electricity is produced using…",o:["Coal","Solar panels","The energy of flowing or falling water","Wind turbines"],a:2,e:"HYDRO-ELECTRICITY is generated by the energy of flowing or falling WATER turning turbines. It is a renewable, clean source of energy — another reason water is so important."},
+    {q:"Why should we conserve water?",o:["Because water is unlimited and free","Because clean water is a limited resource needed by all living things, now and in the future","Because using less water is boring","Because water makes the environment look nicer"],a:1,e:"We must conserve water because clean, fresh water is a LIMITED RESOURCE — only about 3% of Earth's water is freshwater, and much of it is not accessible. Future generations need it too."},
+  ]},
+
+  /* ─────────── THEME 4: PERSONAL HEALTH & ENVIRONMENT ─────────── */
+  {id:'y6t4a',th:4,icon:'💊',name:'Drugs',sub:'Medicinal vs harmful drugs & healthy habits',qs:[
+    {q:"What is the difference between MEDICINAL drugs and HARMFUL drugs?",o:["There is no difference — all drugs are the same","Medicinal drugs are prescribed to treat illness; harmful drugs damage the body and have no medical benefit","Harmful drugs are prescribed by doctors","Medicinal drugs are illegal"],a:1,e:"MEDICINAL drugs (like antibiotics and paracetamol) are used to TREAT illness under medical supervision. HARMFUL drugs (like illicit drugs and misused substances) DAMAGE the body, brain, and health with no therapeutic benefit."},
+    {q:"Why should antibiotics be taken EXACTLY as prescribed by a doctor?",o:["Because they taste nice","To ensure the full course kills the infection and to prevent antibiotic resistance","Antibiotics can be taken any time — it doesn't matter","To use up the medicine quickly"],a:1,e:"Antibiotics must be taken as PRESCRIBED — completing the full course ensures the infection is fully treated. Stopping early or misusing antibiotics can lead to ANTIBIOTIC RESISTANCE, making future infections harder to treat."},
+    {q:"Which of these can HARM the body?",o:["Drinking clean water","Eating balanced meals","Alcohol, cigarettes and illicit drugs","Regular exercise"],a:2,e:"ALCOHOL, CIGARETTES, and ILLICIT DRUGS are all harmful substances. They damage organs (liver, lungs, brain), cause addiction, increase disease risk, and can be fatal with long-term use."},
+    {q:"What is 'SYABU' (methamphetamine)?",o:["A type of medicine prescribed by doctors","A type of food","An illicit (illegal) drug that severely damages the brain and body","A sports drink"],a:2,e:"'Syabu' (methamphetamine) is an ILLICIT DRUG — an illegal substance that is highly addictive and severely damages the brain, heart, and body. Its use is a serious crime in Brunei."},
+    {q:"What is PASSIVE SMOKING?",o:["Smoking by yourself only","Choosing not to smoke","Inhaling second-hand smoke from other people's cigarettes","Smoking slowly"],a:2,e:"PASSIVE SMOKING is inhaling SECOND-HAND SMOKE — the smoke produced by other people's cigarettes. It is just as harmful as smoking yourself, causing lung cancer, heart disease, and other serious conditions."},
+    {q:"Which healthy habit helps REDUCE the spread of infection?",o:["Sharing food utensils without washing","Cleaning body parts with soap and water regularly","Avoiding all physical activity","Staying in air-conditioned rooms only"],a:1,e:"Cleaning body parts (especially HANDS) with SOAP and WATER removes germs and is one of the most effective ways to reduce the spread of infections and diseases."},
+    {q:"Drug TRAFFICKING means…",o:["Taking drugs for medical reasons","The legal sale of medicine in pharmacies","The illegal buying, selling and distribution of harmful drugs","Carrying medicines across countries legally"],a:2,e:"Drug TRAFFICKING is the ILLEGAL trade (buying, selling, transporting) of harmful drugs. It is a very serious crime in Brunei and carries severe penalties, including the death penalty."},
+    {q:"From a HEALTH perspective, why is alcohol harmful?",o:["It makes people taller","It damages the liver, brain and other organs, and impairs judgement","It improves concentration","It has no effect on health"],a:1,e:"Alcohol DAMAGES vital organs — particularly the LIVER and BRAIN. It impairs judgment, coordination, and reaction time, and leads to addiction. Long-term alcohol abuse causes liver disease, cancer, and mental health problems."},
+  ]},
+
+  {id:'y6t4b',th:4,icon:'🌿',name:'Health & The Environment',sub:'Pollution, environmental changes & protection',qs:[
+    {q:"The ENVIRONMENT includes…",o:["Only plants and animals","Only weather and climate","The space around us and all the conditions within it — living and non-living","Only the air we breathe"],a:2,e:"The ENVIRONMENT includes all the SPACE and CONDITIONS around living things — air, water, soil, climate, other organisms, and human-made structures. Everything that surrounds and affects living things."},
+    {q:"Changes in the environment can be caused by…",o:["Natural events only","Human activities only","BOTH natural events and human activities","Neither — environments never change"],a:2,e:"Environmental changes can be NATURAL (e.g. volcanic eruptions, floods, droughts) or HUMAN-INFLUENCED (e.g. deforestation, pollution, urbanisation). Both can significantly affect ecosystems and health."},
+    {q:"Which is an example of POLLUTION harming HEALTH?",o:["Clean air improving lung function","Haze from forest fires causing breathing problems and asthma","Rain cleaning the environment","Plants growing in clean soil"],a:1,e:"HAZE from forest fires and burning causes air pollution — fine particles damage the lungs, triggering breathing problems, asthma attacks, and other respiratory diseases. This is a real health concern in Brunei."},
+    {q:"Which is an example of ENVIRONMENTAL damage caused by humans?",o:["A river flooding after heavy rain","An oil spill polluting the sea and killing marine life","A volcano erupting","A tree falling in a storm"],a:1,e:"OIL SPILLS are caused by human activities (oil tanker accidents, pipeline leaks) and severely damage marine ecosystems — killing sea animals, poisoning water, and destroying habitats."},
+    {q:"Which is an example of how SCIENCE AND TECHNOLOGY can protect the environment?",o:["Building more factories near rivers","Using recycling technology to reduce waste","Cutting down more rainforests for development","Burning more fossil fuels"],a:1,e:"RECYCLING TECHNOLOGY converts waste into reusable materials, reducing pollution and conserving natural resources. Other examples: satellites to detect hot spots, sewage treatment, and renewable energy technology."},
+    {q:"Why is it important to CONSERVE RAINFORESTS?",o:["Rainforests have no value","Rainforests are home to millions of species, produce oxygen, regulate climate, and are a vital natural resource","Rainforests just take up space","Rainforests cause flooding"],a:1,e:"RAINFORESTS are critical — they are home to millions of plant and animal species, produce vast amounts of oxygen, regulate the climate, and provide medicinal plants and resources. Deforestation destroys all of this."},
+    {q:"What is RECYCLING?",o:["Burning waste to get rid of it","Dumping waste in the ocean","Converting waste materials into new usable products to reduce pollution and conserve resources","Buying new products every time"],a:2,e:"RECYCLING is the process of converting used (waste) materials into NEW products. It conserves natural resources, reduces landfill waste, saves energy, and decreases pollution. Example: recycled paper, glass, metal, plastic."},
+    {q:"Accumulation of GARBAGE in the environment can cause…",o:["Cleaner air and water","Diseases, pollution of water sources, and harm to wildlife","Faster plant growth","No problems at all"],a:1,e:"Garbage ACCUMULATION causes serious problems: it pollutes water sources, releases toxic gases, attracts disease-carrying pests (rats, mosquitoes), harms wildlife, and creates breeding grounds for pathogens."},
+  ]},
+
+  /* ─────────── THEME 5: SYSTEMS ─────────── */
+  {id:'y6t5a',th:5,icon:'💡',name:'Electrical Systems',sub:'Electrical components working together',qs:[
+    {q:"An ELECTRICAL SYSTEM is…",o:["A single battery on its own","Different electrical parts joined together to perform a function","A wire with no connections","A type of mechanical machine"],a:1,e:"An ELECTRICAL SYSTEM consists of DIFFERENT ELECTRICAL PARTS (components) joined together to perform a specific FUNCTION. Examples: a circuit that lights a bulb, a buzzer circuit, a motor circuit."},
+    {q:"Which components are needed to build a SIMPLE electrical system?",o:["Wood, nails and glue","Electric wires, switch, battery and another component (bulb, buzzer or motor)","Water, pump and pipe","Only a battery and nothing else"],a:1,e:"A simple electrical system uses: ELECTRIC WIRES (connect components), SWITCH (controls the circuit), BATTERY (energy source), and another COMPONENT such as a bulb, buzzer, or motor."},
+    {q:"A BUZZER circuit is an example of an electrical system because…",o:["It uses water to work","Different electrical parts (battery, wires, switch, buzzer) work together to produce sound","It uses only one component","It works without electricity"],a:1,e:"A buzzer circuit is an electrical system — DIFFERENT PARTS (battery, wires, switch, buzzer) are JOINED TOGETHER and work as a unit to produce sound when the circuit is closed."},
+    {q:"How does a simple household circuit RELATE to an electrical system?",o:["They have nothing in common","A household circuit connects a power source to electrical devices (like bulbs or fans) — just like an electrical system connects components to perform a function","Household circuits never use switches","A household circuit uses water instead of electricity"],a:1,e:"A HOUSEHOLD CIRCUIT is a real-life electrical system — it connects the power source (mains supply), through wires and switches, to electrical devices (bulbs, fans, doorbells) to perform useful functions."},
+    {q:"In a model LIGHTHOUSE electrical system, the function is to…",o:["Make sounds","Pump water","Flash a light","Heat an object"],a:2,e:"A model lighthouse electrical system's FUNCTION is to produce a FLASHING LIGHT — demonstrating how electrical components (battery, wires, switch, bulb) work together to serve a purpose."},
+    {q:"A MOTOR in an electrical circuit converts electrical energy into…",o:["Sound energy","Light energy","Movement (kinetic) energy","Heat energy"],a:2,e:"An electric MOTOR converts ELECTRICAL ENERGY into MOVEMENT (kinetic) energy. This is how electric fans, washing machines, and model cars work — the motor spins when current flows through it."},
+  ]},
+
+  {id:'y6t5b',th:5,icon:'⚙️',name:'Mechanical Systems & Machines',sub:'Mechanical parts, simple machines & their uses',qs:[
+    {q:"A MECHANICAL SYSTEM consists of…",o:["Only electrical components","Different mechanical parts joined together to perform a function","A single component working alone","Only chemical reactions"],a:1,e:"A MECHANICAL SYSTEM consists of DIFFERENT MECHANICAL PARTS joined together that work as a unit to perform a specific function. Examples: a pulley system, a windmill, a bicycle."},
+    {q:"What does a MACHINE do?",o:["Makes work harder","Makes work easier","Produces electricity only","Stops things from moving"],a:1,e:"A MACHINE makes WORK EASIER. It can change the direction of a force, increase its effect, or allow work to be done with less effort. Simple machines are the building blocks of all complex machines."},
+    {q:"Which of these is an example of a SIMPLE MACHINE?",o:["Battery","Bulb","Lever","Switch"],a:2,e:"A LEVER is a simple machine. Other simple machines include: pulley, wheel and axle, inclined plane, gears, wedge, and screw. Simple machines reduce the effort needed to do work."},
+    {q:"A PULLEY is a simple machine that…",o:["Produces electricity","Uses a wheel and rope to change the direction of a force, making lifting easier","Measures temperature","Conducts electricity"],a:1,e:"A PULLEY uses a wheel with a rope or chain to change the direction of a force. It makes LIFTING heavy objects easier — either by changing the direction of pull or by reducing the effort needed."},
+    {q:"An INCLINED PLANE (ramp) makes work easier by…",o:["Increasing the distance needed to move but reducing the force needed","Decreasing both distance and force","Increasing both force and distance","Having no effect on work"],a:0,e:"An INCLINED PLANE (ramp) allows you to move a heavy object to a height using LESS FORCE — but you travel a LONGER DISTANCE. You trade distance for force, making the work feel easier."},
+    {q:"A BICYCLE is an example of a machine that contains which simple machines?",o:["Only levers","Only pulleys","Multiple simple machines — gears, wheel and axle, and lever (brakes/handlebars)","Only inclined planes"],a:2,e:"A BICYCLE contains MULTIPLE simple machines working together: GEARS (to change speed/effort), WHEEL AND AXLE (wheels on axles for movement), and LEVERS (brake levers, handlebars). This makes it a complex machine built from simple ones."},
+    {q:"GEARS in a machine are used to…",o:["Store electricity","Change the speed, force, or direction of movement","Produce light","Measure distance"],a:1,e:"GEARS are toothed wheels that mesh together to CHANGE SPEED, FORCE, or DIRECTION of movement. When a large gear turns a small gear, the small gear turns faster. Used in clocks, bicycles, and cars."},
+    {q:"A machine 'consists of one or more systems'. What does this mean?",o:["Machines work alone without any systems","Complex machines are built from multiple simple machines or systems working together","All machines use only one simple machine","Systems and machines are completely different things"],a:1,e:"Complex MACHINES are built from multiple SIMPLE MACHINES or SYSTEMS working together. For example: a crane uses levers, pulleys, and a wheel-and-axle system all working together to lift heavy loads."},
+  ]},
+];
+
+/* ══ STATE ══════════════════════════════════════════════ */
+let player='',cTopic=null,cQs=[],qi=0;
+let score=0,streak=0,best=0,wrongs=0,tt=0,tpq=[];
+let tiv=null,tl=30,qs=0,answered=false;
+let prev={},qMode=0;
+
+/* ══ SCREEN ═════════════════════════════════════════════ */
+function show(id){
+  document.querySelectorAll('.scr').forEach(s=>s.classList.remove('on'));
+  document.getElementById('scr-'+id).classList.add('on');
+  window.scrollTo(0,0);
+}
+
+/* ══ WELCOME → TOPICS ═══════════════════════════════════ */
+function goTopics(){
+  const inp=document.getElementById('pname');
+  if(inp&&inp.value.trim())player=inp.value.trim();
+  if(!player){_nameError();return;}
+  document.getElementById('wmsg').textContent=`Hello ${player}! Pick a Year 6 topic! 🌟`;
+  buildGrid(); show('topics'); beep('clk');
+}
+
+function setMode(m){
+  qMode=m;
+  document.getElementById('mq5').classList.toggle('sel',m===5);
+  document.getElementById('mAll').classList.toggle('sel',m===0);
+}
+
+function buildGrid(){
+  const g=document.getElementById('tgrid');
+  const tn={2:'⚡ Theme 2 — Energy & Forces (Electricity)',3:'🌀 Theme 3 — Cycles (Solar System & Water)',4:'💪 Theme 4 — Personal Health & Environment',5:'⚙️ Theme 5 — Systems (Electrical, Mechanical & Machines)'};
+  const tlc={2:'tl2',3:'tl3',4:'tl4',5:'tl5'};
+  const byt={};TOPICS.forEach(t=>{if(!byt[t.th])byt[t.th]=[];byt[t.th].push(t);});
+  g.innerHTML='';
+  Object.keys(byt).sort().forEach(n=>{
+    const d=document.createElement('div');d.className='tdiv';d.textContent=tn[n];g.appendChild(d);
+    byt[n].forEach(t=>{
+      const p=prev[t.id];
+      const badge=p?`<span class="tb ${tlc[t.th]}">Last: ${p.score}/${p.total}</span>`:`<span class="tb ${tlc[t.th]}">NEW ✨</span>`;
+      const b=document.createElement('button');
+      b.className=`tbtn th${t.th}`;
+      b.innerHTML=`<span class="ti">${t.icon}</span><div class="tnfo"><div class="tn">${t.name}</div><div class="ts">${t.sub}</div></div>${badge}`;
+      b.onclick=()=>{beep('clk');startTopic(t);};
+      g.appendChild(b);
+    });
+  });
+}
+
+/* ══ QUIZ ════════════════════════════════════════════════ */
+function startTopic(t){
+  cTopic=t;
+  let pool=shuf([...t.qs]);
+  if(qMode===5)pool=pool.slice(0,5);
+  cQs=pool;
+  qi=0;score=0;streak=0;best=0;wrongs=0;tt=0;tpq=[];
+  document.getElementById('qbadge').textContent=`${t.icon} ${t.name}`;
+  upStrip(); show('quiz'); loadQ();
+}
+
+function shuf(a){for(let i=a.length-1;i>0;i--){const j=~~(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+function loadQ(){
+  if(qi>=cQs.length){showResult();return;}
+  answered=false;
+  const q=cQs[qi];
+  document.getElementById('qcnt').textContent=`Q${qi+1}/${cQs.length}`;
+  document.getElementById('qtxt').textContent=q.q;
+  const order=shuf([0,1,2,3]);
+  q._si=order.indexOf(q.a);
+  const og=document.getElementById('opts');og.innerHTML='';
+  ['A','B','C','D'].forEach((lbl,di)=>{
+    const b=document.createElement('button');b.className='obtn';b.dataset.di=di;
+    b.innerHTML=`<span class="olbl">${lbl}</span>${q.o[order[di]]}`;
+    b.onclick=()=>pick(b,di,q);
+    og.appendChild(b);
+  });
+  document.getElementById('fbcard').classList.remove('on','correct','wrong');
+  document.getElementById('nxtwrap').classList.remove('on');
+  startTimer(q); qs=Date.now();
+}
+
+function startTimer(q){
+  clearInterval(tiv);tl=30;upTimer();
+  tiv=setInterval(()=>{
+    tl--;if(tl<=5&&tl>0)beep('tick');upTimer();
+    if(tl<=0){clearInterval(tiv);if(!answered)doTimeout(q);}
+  },1000);
+}
+
+function upTimer(){
+  const b=document.getElementById('tbar'),n=document.getElementById('tnum');
+  b.style.width=(tl/30*100)+'%';n.textContent=tl;
+  if(tl<=8){b.classList.add('warn');n.classList.add('warn');}
+  else{b.classList.remove('warn');n.classList.remove('warn');}
+}
+
+function pick(btn,di,q){
+  if(answered)return;answered=true;clearInterval(tiv);
+  const el=Math.max(1,~~((Date.now()-qs)/1000));tpq.push(el);tt+=el;
+  const ok=(di===q._si);
+  document.querySelectorAll('.obtn').forEach((b,i)=>{b.classList.add('dis');if(i===q._si)b.classList.add('revc');});
+  if(ok){btn.classList.add('correct');score++;streak++;if(streak>best)best=streak;beep('ok');}
+  else{btn.classList.add('wrong');streak=0;wrongs++;beep('no');}
+  upStrip();showFB(ok,q,el);
+}
+
+function doTimeout(q){
+  answered=true;
+  document.querySelectorAll('.obtn').forEach((b,i)=>{b.classList.add('dis');if(i===q._si)b.classList.add('revc');});
+  streak=0;wrongs++;tpq.push(30);tt+=30;
+  upStrip();showFB(false,q,30,true);beep('to');
+}
+
+function showFB(ok,q,el,to=false){
+  const fc=document.getElementById('fbcard');fc.classList.remove('correct','wrong');
+  if(to){
+    document.getElementById('fbe').textContent='⏰';
+    document.getElementById('fbt').textContent="Time's Up!";
+    document.getElementById('fbt').className='fbt wrong';
+    fc.classList.add('wrong');
+    document.getElementById('fbtx').textContent=`You ran out of time! ${q.e}`;
+  }else if(ok){
+    const es=['🎉','⭐','🌟','🏆','🎯','💪','🔥','✨'];
+    const ms=['Amazing!','Correct!','Brilliant!','Well Done!','Superstar!','Nailed It!','Fantastic!','You Rock!'];
+    document.getElementById('fbe').textContent=es[~~(Math.random()*es.length)];
+    document.getElementById('fbt').textContent=ms[~~(Math.random()*ms.length)]+(el<=8?' ⚡ Super Fast!':'');
+    document.getElementById('fbt').className='fbt correct';fc.classList.add('correct');
+    document.getElementById('fbtx').textContent=q.e;
+  }else{
+    const we=['😢','😬','🤔','💡','📖'];
+    document.getElementById('fbe').textContent=we[~~(Math.random()*we.length)];
+    document.getElementById('fbt').textContent='Not Quite!';
+    document.getElementById('fbt').className='fbt wrong';fc.classList.add('wrong');
+    document.getElementById('fbtx').textContent=`Correct answer: "${q.o[q.a]}". ${q.e}`;
+  }
+  fc.classList.add('on');document.getElementById('nxtwrap').classList.add('on');
+  setTimeout(()=>{fc.scrollIntoView({behavior:'smooth',block:'nearest'});},100);
+}
+
+function upStrip(){
+  document.getElementById('s0').textContent=score;document.getElementById('s1').textContent=streak;
+  const a=tpq.length?~~(tt/tpq.length):null;
+  document.getElementById('s2').textContent=a?a+'s':'–';
+}
+
+function nextQ(){beep('clk');qi++;document.getElementById('fbcard').classList.remove('on');document.getElementById('nxtwrap').classList.remove('on');loadQ();}
+
+document.addEventListener('keydown',e=>{if((e.code==='Space'||e.code==='Enter')&&document.getElementById('nxtwrap').classList.contains('on'))nextQ();});
+
+/* ══ RESULTS ════════════════════════════════════════════ */
+function showResult(){
+  clearInterval(tiv);
+  const tot=cQs.length,pct=~~(score/tot*100);
+  const avg=tpq.length?~~(tt/tpq.length):0;
+  let trophy,msg;
+  if(pct===100){trophy='🏆';msg="PERFECT SCORE! You're a Science Champion!";}
+  else if(pct>=80){trophy='🥇';msg=`Excellent work, ${player}!`;}
+  else if(pct>=60){trophy='🥈';msg='Good job, keep practicing!';}
+  else if(pct>=40){trophy='🥉';msg="Getting there! Try again!";}
+  else{trophy='📚';msg='Study and try again — you can do it!';}
+  document.getElementById('rtr').textContent=trophy;
+  document.getElementById('rn').textContent=`${player}'s Result`;
+  document.getElementById('rs').textContent=`${score}/${tot}`;
+  document.getElementById('rsb').textContent=`${pct}% · ${msg}`;
+  document.getElementById('r0').textContent=score;document.getElementById('r1').textContent=wrongs;
+  document.getElementById('r2').textContent=avg+'s';document.getElementById('r3').textContent=best;
+  const p=prev[cTopic.id];const bn=document.getElementById('ibanner');
+  bn.classList.remove('up','dn');
+  if(p){
+    const su=score>p.score,tu=avg<p.avgTime,imp=su||(score>=p.score&&tu);
+    if(imp){
+      bn.classList.add('up');document.getElementById('ibe').textContent='🎊🌟🎊';
+      document.getElementById('ibt').textContent='IMPROVEMENT!';
+      document.getElementById('ibtx').textContent=su?`+${score-p.score} more correct than last time! Amazing!`:`Same score but ${p.avgTime-avg}s faster! Great speed!`;
+      if(pct>=60){confetti();if(pct>=80)beep('fan');}
+    }else{
+      bn.classList.add('dn');document.getElementById('ibe').textContent='😢';
+      document.getElementById('ibt').textContent='Keep Trying!';
+      document.getElementById('ibtx').textContent=`You had ${p.score}/${p.total} before. Review answers and try again!`;
+    }
+  }else{
+    bn.classList.add('up');document.getElementById('ibe').textContent='⭐';
+    document.getElementById('ibt').textContent='First Attempt!';
+    document.getElementById('ibtx').textContent='Practice again to improve your score!';
+    if(pct>=60){confetti();if(pct===100)beep('fan');}
+  }
+  prev[cTopic.id]={score,total:tot,avgTime:avg};
+  const stars=pct===100?'⭐⭐⭐':pct>=80?'⭐⭐':'⭐';
+  document.getElementById('shareText').innerHTML=`<b>${player}</b> scored <b>${score}/${tot} (${pct}%)</b><br>Topic: ${cTopic.name} | Year 6 Science<br>Avg Speed: ${avg}s per question<br>${stars}<br><i>Science Quest by Tr. Salfa · SR Perpindahan Kg. Lambak Kanan</i>`;
+  saveLB({name:player,topic:cTopic.name,score,total:tot,pct,avg,date:new Date().toLocaleDateString('en-GB')});
+  show('result');
+}
+
+function retry(){beep('clk');startTopic(cTopic);}
+
+function confBack(){
+  clearInterval(tiv);
+  _modal('⬅','Go back to topics?','Your current quiz progress will be lost.','Go Back',function(){beep('clk');goTopics();},true);
+}
+
+/* ══ LEADERBOARD ════════════════════════════════════════ */
+function saveLB(entry){
+  try{
+    let lb=JSON.parse(localStorage.getItem('y6sciLB')||'[]');
+    lb.unshift(entry);lb=lb.slice(0,50);
+    localStorage.setItem('y6sciLB',JSON.stringify(lb));
+  }catch(e){}
+}
+
+function goLB(){buildLB();show('lb');beep('clk');}
+
+function buildLB(){
+  try{
+    const lb=JSON.parse(localStorage.getItem('y6sciLB')||'[]');
+    const tbody=document.getElementById('lbbody');
+    if(lb.length===0){tbody.innerHTML=`<tr><td colspan="6" class="lbempty">No scores yet. Play a quiz first! 🎮</td></tr>`;return;}
+    tbody.innerHTML=lb.slice(0,20).map((e,i)=>`
+      <tr>
+        <td>${i===0?'🥇':i===1?'🥈':i===2?'🥉':i+1}</td>
+        <td>${e.name}</td>
+        <td style="font-size:.75rem">${e.topic}</td>
+        <td><b>${e.score}/${e.total}</b> <span style="color:var(--muted);font-size:.75rem">(${e.pct}%)</span></td>
+        <td>${e.avg}s</td>
+        <td style="font-size:.72rem;color:var(--muted)">${e.date}</td>
+      </tr>`).join('');
+  }catch(e){document.getElementById('lbbody').innerHTML='<tr><td colspan="6" class="lbempty">Could not load scores.</td></tr>';}
+}
+
+function clearLB(){
+  _modal('🗑️','Clear all scores?','This will delete ALL Year 6 leaderboard scores on this device.','Clear All',function(){
+    try{localStorage.removeItem('y6sciLB');}catch(e){}
+    buildLB();
+  },true);
+}
+
+/* ══ CONFETTI ════════════════════════════════════════════ */
+function confetti(){
+  const cs=['#ffd93d','#ff6b6b','#6bcb77','#4d96ff','#c77dff','#fff'];
+  for(let i=0;i<70;i++){
+    const el=document.createElement('div');el.className='cfp';
+    const c=cs[~~(Math.random()*cs.length)],d=Math.random()*2+1.5;
+    el.style.cssText=`left:${Math.random()*100}vw;background:${c};--d:${d}s;animation-delay:${Math.random()*.5}s;width:${Math.random()*10+5}px;height:${Math.random()*10+5}px;border-radius:${Math.random()>.5?'50%':'2px'}`;
+    document.body.appendChild(el);setTimeout(()=>el.remove(),(d+.6)*1000);
+  }
+}
+
+/* ══ INIT ════════════════════════════════════════════════ */
+show('welcome');
+</script>
+<script>
+/* ══ WHATSAPP BROWSER DETECTION ════════════════════════ */
+(function(){
+  var ua=navigator.userAgent||"";
+  var isWA=ua.indexOf("WhatsApp")>-1;
+  // Also detect other in-app browsers that may block interactions
+  var isInApp=/FBAN|FBAV|Instagram|Line\/|MicroMessenger|Twitter|LinkedInApp/.test(ua);
+  if(isWA||isInApp){
+    var b=document.getElementById("wa-banner");
+    if(b){b.classList.add("show");document.body.classList.add("wa-open");}
+  }
+})();
+function openInBrowser(){
+  var url=window.location.href;
+  // Try various methods to open in external browser
+  if(navigator.userAgent.indexOf("WhatsApp")>-1){
+    // WhatsApp Android: intent scheme
+    var intentUrl="intent://"+url.replace(/^https?:\/\//,"")+"#Intent;scheme=https;package=com.android.chrome;end";
+    window.location.href=intentUrl;
+    // Fallback after short delay
+    setTimeout(function(){
+      window.open(url,"_blank");
+    },500);
+  } else {
+    window.open(url,"_blank");
+  }
+}
+</script>
+</body>
+</html>
