@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Year 5 Science Quest | Tr. Salfa</title>
+<style>
+:root{
+  --bg1:#0c1a2e;--bg2:#1a3a5c;--bg3:#0f2a44;
+  --bdr:rgba(255,255,255,.15);--muted:rgba(255,255,255,.55);
+  --ok:#6bcb77;--no:#ff6b6b;
+  --a1:#ff6b6b;--a2:#ffd93d;--a4:#4d96ff;--a5:#c77dff;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{min-height:100%;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif}
+body{background:linear-gradient(135deg,#0c1a2e 0%,#1a3a5c 50%,#0f2a44 100%);min-height:100vh;color:#fff;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse at 20% 20%,rgba(77,150,255,.2) 0%,transparent 55%),radial-gradient(ellipse at 80% 80%,rgba(107,203,119,.15) 0%,transparent 55%)}
+.stars{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.star{position:absolute;background:#fff;border-radius:50%;animation:twinkle var(--d,3s) ease-in-out infinite;opacity:0}
+@keyframes twinkle{0%,100%{opacity:0;transform:scale(.5)}50%{opacity:.9;transform:scale(1)}}
+#sndBtn{position:fixed;top:12px;right:12px;z-index:300;background:rgba(255,255,255,.12);border:1.5px solid var(--bdr);border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;cursor:pointer}
+#app{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:16px 14px 28px}
+.scr{display:none;width:100%;animation:fup .35s ease}
+.scr.on{display:flex;flex-direction:column;align-items:center}
+@keyframes fup{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.logo{text-align:center;margin-bottom:16px}
+.logo .er{font-size:2rem;animation:bounce 2s infinite;margin-bottom:4px;display:block}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+.logo h1{font-size:clamp(1.9rem,7vw,3rem);font-weight:900;background:linear-gradient(135deg,#4d96ff,#6bcb77,#ffd93d);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.1}
+.logo p{color:var(--muted);font-size:.85rem;margin-top:4px}
+.brand{text-align:center;margin-top:14px;color:var(--muted);font-size:.7rem;line-height:1.8}
+.brand b{color:var(--a2)}
+.card{background:rgba(255,255,255,.08);backdrop-filter:blur(16px);border:1px solid var(--bdr);border-radius:20px;padding:22px;width:100%;max-width:440px}
+.il{display:block;font-weight:800;margin-bottom:6px;color:var(--a2);font-size:.8rem;text-transform:uppercase;letter-spacing:1px}
+input[type=text]{width:100%;padding:12px 15px;background:rgba(255,255,255,.1);border:2px solid var(--bdr);border-radius:12px;color:#fff;font-size:1rem;font-weight:700;outline:none;transition:.25s;font-family:inherit;margin-bottom:14px}
+input[type=text]:focus{border-color:var(--a4);background:rgba(77,150,255,.15)}
+input[type=text]::placeholder{color:rgba(255,255,255,.3)}
+.btn{width:100%;padding:14px;border:none;border-radius:13px;font-size:1.1rem;font-weight:900;cursor:pointer;transition:all .2s}
+.btnp{background:linear-gradient(135deg,#4d96ff,#6bcb77);color:#fff;box-shadow:0 7px 20px rgba(77,150,255,.35)}
+.btnp:hover{transform:translateY(-2px)}
+.btnp:active{transform:scale(.97)}
+.btns{background:rgba(255,255,255,.1);color:#fff;border:2px solid var(--bdr);font-size:1rem;padding:11px}
+.btns:hover{background:rgba(255,255,255,.17)}
+.btn-row{display:flex;gap:8px;width:100%}
+.btn-row .btn{font-size:.95rem}
+#scr-topics{max-width:900px}
+.tophd{text-align:center;margin-bottom:12px;width:100%}
+.tophd h2{font-size:clamp(1.4rem,4vw,2rem);font-weight:900;background:linear-gradient(135deg,#4d96ff,#6bcb77);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.tophd p{color:var(--muted);font-size:.85rem;margin-top:3px}
+.mode-row{display:flex;gap:8px;margin-bottom:12px;width:100%}
+.mode-btn{flex:1;padding:10px 8px;border-radius:11px;border:2px solid var(--bdr);background:rgba(255,255,255,.07);color:var(--muted);font-size:.82rem;font-weight:800;cursor:pointer;transition:.2s;text-align:center}
+.mode-btn.sel{border-color:var(--a2);background:rgba(255,217,61,.15);color:var(--a2)}
+.tgrid{display:grid;gap:8px;width:100%;grid-template-columns:1fr}
+@media(min-width:580px){.tgrid{grid-template-columns:1fr 1fr}}
+.tdiv{grid-column:1/-1;font-size:.78rem;font-weight:900;color:rgba(255,255,255,.35);padding:8px 3px 2px;letter-spacing:1px;text-transform:uppercase;border-top:1px solid rgba(255,255,255,.07);margin-top:3px}
+.tdiv:first-child{border-top:none;margin-top:0}
+.tbtn{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.07);border:2px solid var(--bdr);border-radius:13px;padding:11px 13px;cursor:pointer;transition:all .2s;color:#fff;font-size:.88rem;font-weight:700;text-align:left;width:100%}
+.tbtn:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,.3)}
+.tbtn:active{transform:scale(.97)}
+.ti{font-size:1.5rem;min-width:30px;text-align:center}
+.tnfo{flex:1} .tn{font-size:.88rem;font-weight:800} .ts{font-size:.68rem;color:var(--muted);margin-top:1px}
+.tb{font-size:.65rem;padding:2px 7px;border-radius:20px;font-weight:900;white-space:nowrap}
+.tbtn.th1{border-color:rgba(107,203,119,.4)} .tbtn.th1:hover{background:rgba(107,203,119,.12);border-color:var(--ok)}
+.tbtn.th2{border-color:rgba(77,150,255,.4)}  .tbtn.th2:hover{background:rgba(77,150,255,.12);border-color:var(--a4)}
+.tbtn.th3{border-color:rgba(255,217,61,.4)}  .tbtn.th3:hover{background:rgba(255,217,61,.12);border-color:var(--a2)}
+.tbtn.th4{border-color:rgba(255,107,107,.4)} .tbtn.th4:hover{background:rgba(255,107,107,.12);border-color:var(--a1)}
+.tbtn.th5{border-color:rgba(199,125,255,.4)} .tbtn.th5:hover{background:rgba(199,125,255,.12);border-color:var(--a5)}
+.tl1{background:rgba(107,203,119,.22);color:var(--ok)} .tl2{background:rgba(77,150,255,.22);color:var(--a4)}
+.tl3{background:rgba(255,217,61,.22);color:var(--a2)} .tl4{background:rgba(255,107,107,.22);color:var(--a1)}
+.tl5{background:rgba(199,125,255,.22);color:var(--a5)}
+.scrl{overflow-y:auto;width:100%;padding-right:2px}
+@media(max-width:799px){.scrl{max-height:58vh}}
+@media(min-width:800px){.scrl{max-height:68vh}}
+.scrl::-webkit-scrollbar{width:3px}
+.scrl::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:3px}
+#scr-quiz{max-width:1100px;width:100%}
+.qhdr{display:flex;align-items:center;gap:8px;margin-bottom:10px;width:100%}
+.qbadge{flex:1;background:rgba(255,255,255,.1);border-radius:10px;padding:6px 11px;font-size:.8rem;font-weight:800;color:var(--a2);text-align:center}
+.qcnt{font-size:.92rem;font-weight:900;color:var(--muted);white-space:nowrap}
+.backbtn{background:none;border:none;color:var(--muted);cursor:pointer;font-size:1.3rem;padding:3px;line-height:1}
+.sstrip{display:flex;gap:6px;margin-bottom:10px;width:100%}
+.schip{flex:1;background:rgba(255,255,255,.08);border-radius:10px;padding:6px;text-align:center}
+.schip .sv{font-size:1.25rem;font-weight:900} .schip .sl{font-size:.58rem;color:var(--muted);text-transform:uppercase}
+.schip.sg .sv{color:var(--ok)} .schip.sy .sv{color:var(--a2)} .schip.sb .sv{color:var(--a4)}
+.twrap{margin-bottom:10px;width:100%}
+.tbarbg{background:rgba(255,255,255,.1);border-radius:20px;height:10px;overflow:hidden}
+.tbar{height:100%;border-radius:20px;transition:width 1s linear,background .8s;background:linear-gradient(90deg,#4d96ff,#6bcb77)}
+.tbar.warn{background:linear-gradient(90deg,#ffd93d,#ff6b6b)}
+.tnum{text-align:right;font-size:1.3rem;font-weight:900;margin-top:2px;transition:color .4s}
+.tnum.warn{color:var(--a1);animation:tp .5s infinite}
+@keyframes tp{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
+.qbody{display:flex;flex-direction:column;gap:10px;width:100%}
+@media(min-width:780px){
+  .qbody{flex-direction:row;align-items:flex-start;gap:16px}
+  .qleft{flex:1.1;display:flex;flex-direction:column;gap:10px;min-width:0}
+  .qright{flex:.95;display:flex;flex-direction:column;gap:10px;min-width:0}
+}
+.qleft,.qright{display:flex;flex-direction:column;gap:10px;width:100%}
+.qcard{background:rgba(255,255,255,.08);border:2px solid var(--bdr);border-radius:16px;padding:18px;min-height:95px;display:flex;align-items:center;width:100%}
+.qtxt{font-size:clamp(.95rem,2.5vw,1.15rem);font-weight:800;line-height:1.55;text-align:center;width:100%}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:7px;width:100%}
+.obtn{padding:12px 9px;border-radius:12px;border:2px solid var(--bdr);background:rgba(255,255,255,.07);color:#fff;font-size:.84rem;font-weight:800;cursor:pointer;transition:all .2s;text-align:center;line-height:1.35;position:relative;min-height:62px;display:flex;align-items:center;justify-content:center;font-family:inherit}
+.obtn:hover:not(.dis){background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.3);transform:translateY(-1px)}
+.obtn:active{transform:scale(.95)}
+.obtn.correct{background:rgba(107,203,119,.3);border-color:var(--ok);animation:pok .5s}
+.obtn.wrong{background:rgba(255,107,107,.3);border-color:var(--a1);animation:shk .4s}
+.obtn.revc{background:rgba(107,203,119,.2);border-color:var(--ok)}
+.obtn.dis{pointer-events:none}
+.olbl{position:absolute;top:4px;left:6px;font-size:.78rem;font-weight:900;opacity:.4}
+@keyframes pok{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+@keyframes shk{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.fbcard{border-radius:16px;padding:14px;animation:sup .35s ease;display:none;width:100%}
+.fbcard.on{display:block}
+.fbcard.correct{background:rgba(107,203,119,.17);border:2px solid var(--ok)}
+.fbcard.wrong{background:rgba(255,107,107,.12);border:2px solid rgba(255,107,107,.45)}
+@keyframes sup{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.fbe{font-size:1.9rem;text-align:center;margin-bottom:5px}
+.fbt{font-size:1.1rem;font-weight:900;text-align:center;margin-bottom:5px}
+.fbt.correct{color:var(--ok)} .fbt.wrong{color:var(--a1)}
+.fbtx{font-size:.82rem;line-height:1.65;color:rgba(255,255,255,.87);text-align:center}
+.nxtwrap{display:none;width:100%}
+.nxtwrap.on{display:block}
+.hint{font-size:.68rem;color:var(--muted);text-align:center;margin-top:4px}
+#scr-result{max-width:600px}
+.rh{text-align:center;margin-bottom:16px;width:100%}
+.rtr{font-size:4rem;animation:tin .7s ease}
+@keyframes tin{0%{transform:scale(0)rotate(-20deg)}70%{transform:scale(1.2)rotate(5deg)}100%{transform:scale(1)rotate(0)}}
+.rn{font-size:1.55rem;font-weight:900;margin-top:8px}
+.rs{font-size:3.4rem;font-weight:900;background:linear-gradient(135deg,#4d96ff,#6bcb77);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.1}
+.rsb{color:var(--muted);font-size:.82rem;margin-top:3px}
+.sgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:13px;width:100%}
+.sbox{background:rgba(255,255,255,.07);border-radius:13px;padding:13px;text-align:center}
+.sbox .sv{font-size:1.7rem;font-weight:900} .sbox .sl{font-size:.68rem;color:var(--muted);margin-top:2px}
+.sbox.sg{border:2px solid rgba(107,203,119,.35)} .sbox.sg .sv{color:var(--ok)}
+.sbox.sb{border:2px solid rgba(77,150,255,.35)}  .sbox.sb .sv{color:var(--a4)}
+.sbox.sy{border:2px solid rgba(255,217,61,.35)}  .sbox.sy .sv{color:var(--a2)}
+.sbox.sp{border:2px solid rgba(199,125,255,.35)} .sbox.sp .sv{color:var(--a5)}
+.ibanner{border-radius:16px;padding:14px;text-align:center;margin-bottom:14px;width:100%;animation:fup .5s .2s both}
+.ibanner.up{background:linear-gradient(135deg,rgba(107,203,119,.22),rgba(77,150,255,.14));border:2px solid var(--ok)}
+.ibanner.dn{background:rgba(255,107,107,.12);border:2px solid rgba(255,107,107,.38)}
+.ibe{font-size:2.4rem;margin-bottom:4px} .ibt{font-size:1.2rem;font-weight:900}
+.ibtx{font-size:.78rem;color:var(--muted);margin-top:3px}
+#scr-lb{max-width:600px}
+.lbhd{text-align:center;margin-bottom:14px;width:100%}
+.lbhd h2{font-size:1.6rem;font-weight:900;background:linear-gradient(135deg,#ffd93d,#ff6b6b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.lbtable{width:100%;border-collapse:collapse;margin-bottom:14px}
+.lbtable th{background:rgba(255,255,255,.1);padding:9px 8px;font-size:.73rem;font-weight:900;text-transform:uppercase;letter-spacing:.5px;color:var(--a2)}
+.lbtable td{padding:7px 8px;font-size:.8rem;font-weight:700;border-bottom:1px solid rgba(255,255,255,.07);text-align:center}
+.lbtable tr:first-child td{color:#ffd93d}
+.lbtable tr:nth-child(2) td{color:#c0c0c0}
+.lbtable tr:nth-child(3) td{color:#cd7f32}
+.lbempty{text-align:center;color:var(--muted);padding:20px;font-size:.9rem}
+.screeny{background:linear-gradient(135deg,rgba(77,150,255,.2),rgba(107,203,119,.2));border:2px solid rgba(77,150,255,.4);border-radius:16px;padding:16px;margin-bottom:14px;width:100%;text-align:center}
+.screeny .se{font-size:2.5rem;margin-bottom:6px}
+.screeny .st{font-size:1rem;font-weight:900;color:var(--a4);margin-bottom:4px}
+.screeny .sd{font-size:.8rem;color:rgba(255,255,255,.75);line-height:1.6}
+.cfp{position:fixed;pointer-events:none;z-index:999;animation:cff var(--d) ease-in forwards}
+@keyframes cff{0%{transform:translateY(-20px)rotate(0);opacity:1}100%{transform:translateY(110vh)rotate(720deg);opacity:0}}
+</style>
+</head>
+<body>
+<div class="stars" id="stars"></div>
+<button id="sndBtn" onclick="toggleSnd()">🔊</button>
+
+<!-- ═══ CUSTOM MODAL — replaces confirm/alert (blocked by WhatsApp browser) ═══ -->
+<div id="_modal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.7);align-items:center;justify-content:center;padding:20px">
+  <div style="background:linear-gradient(135deg,#0a1828,#143050);border:2px solid rgba(255,255,255,.2);border-radius:20px;padding:26px 22px;max-width:310px;width:100%;text-align:center;animation:fup .3s ease">
+    <div id="_mIcon" style="font-size:2.2rem;margin-bottom:8px"></div>
+    <div id="_mMsg" style="font-size:1.05rem;font-weight:900;margin-bottom:6px;color:#fff"></div>
+    <div id="_mSub" style="font-size:.82rem;color:rgba(255,255,255,.6);margin-bottom:18px;line-height:1.5"></div>
+    <div style="display:flex;gap:9px">
+      <button id="_mCancel" style="flex:1;padding:11px;border:2px solid rgba(255,255,255,.2);border-radius:12px;background:rgba(255,255,255,.1);color:#fff;font-size:.95rem;font-weight:900;cursor:pointer" onclick="document.getElementById('_modal').style.display='none'">Cancel</button>
+      <button id="_mOk" style="flex:1;padding:11px;border:none;border-radius:12px;background:linear-gradient(135deg,#4d96ff,#6bcb77);color:#fff;font-size:.95rem;font-weight:900;cursor:pointer"></button>
+    </div>
+  </div>
+</div>
+
+<div id="app">
+
+<!-- WELCOME -->
+<div class="scr on" id="scr-welcome">
+  <div class="logo">
+    <span class="er">🔭🦋💡🐸🌺</span>
+    <h1>Science Quest</h1>
+    <p>Year 5 · Brunei Primary School</p>
+  </div>
+  <div class="card">
+    <label class="il">👤 Your Name</label>
+    <input type="text" id="pname" placeholder="Enter your name…" maxlength="24" onkeydown="if(event.key==='Enter')goTopics()">
+    <button class="btn btnp" onclick="goTopics()">Let's Go! 🚀</button>
+    <div style="margin-top:10px">
+      <button class="btn btns" onclick="goLB()">🏆 Leaderboard</button>
+    </div>
+  </div>
+  <div class="brand">An initiative by <b>Tr. Salfa</b><br>SR Perpindahan Kg. Lambak Kanan Jalan 10, Cluster 3</div>
+</div>
+
+<!-- TOPICS -->
+<div class="scr" id="scr-topics">
+  <div class="tophd">
+    <h2>📚 Choose a Topic</h2>
+    <p id="wmsg">Pick a topic to start!</p>
+  </div>
+  <div class="mode-row" style="max-width:900px;width:100%">
+    <button class="mode-btn" id="mq5" onclick="setMode(5)">⚡ Quick (5 Qs)</button>
+    <button class="mode-btn sel" id="mAll" onclick="setMode(0)">📖 Full Quiz</button>
+  </div>
+  <div class="scrl" style="max-width:900px">
+    <div class="tgrid" id="tgrid"></div>
+  </div>
+  <div class="brand" style="margin-top:10px">An initiative by <b>Tr. Salfa</b> · SR Perpindahan Kg. Lambak Kanan Jalan 10, Cluster 3</div>
+</div>
+
+<!-- QUIZ -->
+<div class="scr" id="scr-quiz">
+  <div class="qhdr">
+    <button class="backbtn" onclick="confBack()">⬅</button>
+    <div class="qbadge" id="qbadge">Topic</div>
+    <div class="qcnt" id="qcnt">Q1/8</div>
+  </div>
+  <div class="sstrip">
+    <div class="schip sg"><div class="sv" id="s0">0</div><div class="sl">✅ Correct</div></div>
+    <div class="schip sy"><div class="sv" id="s1">0</div><div class="sl">🔥 Streak</div></div>
+    <div class="schip sb"><div class="sv" id="s2">–</div><div class="sl">⚡ Avg s</div></div>
+  </div>
+  <div class="twrap">
+    <div class="tbarbg"><div class="tbar" id="tbar"></div></div>
+    <div class="tnum" id="tnum">30</div>
+  </div>
+  <div class="qbody">
+    <div class="qleft">
+      <div class="qcard"><div class="qtxt" id="qtxt">Loading…</div></div>
+      <div class="opts" id="opts"></div>
+    </div>
+    <div class="qright">
+      <div class="fbcard" id="fbcard">
+        <div class="fbe" id="fbe"></div>
+        <div class="fbt" id="fbt"></div>
+        <div class="fbtx" id="fbtx"></div>
+      </div>
+      <div class="nxtwrap" id="nxtwrap">
+        <button class="btn btnp" onclick="nextQ()">Next Question ➡</button>
+        <div class="hint">Tap above to continue</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RESULT -->
+<div class="scr" id="scr-result">
+  <div class="rh">
+    <div class="rtr" id="rtr">🏆</div>
+    <div class="rn" id="rn"></div>
+    <div class="rs" id="rs"></div>
+    <div class="rsb" id="rsb"></div>
+  </div>
+  <div class="sgrid">
+    <div class="sbox sg"><div class="sv" id="r0">0</div><div class="sl">Correct</div></div>
+    <div class="sbox sb"><div class="sv" id="r1">0</div><div class="sl">Wrong</div></div>
+    <div class="sbox sy"><div class="sv" id="r2">–</div><div class="sl">Avg Secs</div></div>
+    <div class="sbox sp"><div class="sv" id="r3">0</div><div class="sl">Best Streak</div></div>
+  </div>
+  <div class="ibanner" id="ibanner">
+    <div class="ibe" id="ibe"></div>
+    <div class="ibt" id="ibt"></div>
+    <div class="ibtx" id="ibtx"></div>
+  </div>
+  <div class="screeny">
+    <div class="se">📸</div>
+    <div class="st">Share Your Result!</div>
+    <div class="sd" id="shareText"></div>
+  </div>
+  <div class="btn-row" style="margin-bottom:8px">
+    <button class="btn btns" onclick="goTopics()" style="flex:1">📚 Topics</button>
+    <button class="btn btnp" onclick="retry()" style="flex:1">🔄 Try Again</button>
+  </div>
+  <button class="btn btns" onclick="goLB()">🏆 View Leaderboard</button>
+  <div class="brand" style="margin-top:14px">An initiative by <b>Tr. Salfa</b> · SR Perpindahan Kg. Lambak Kanan Jalan 10, Cluster 3</div>
+</div>
+
+<!-- LEADERBOARD -->
+<div class="scr" id="scr-lb">
+  <div class="lbhd">
+    <h2>🏆 Leaderboard</h2>
+    <p style="color:var(--muted);font-size:.82rem;margin-top:3px">Top scores on this device</p>
+  </div>
+  <div style="width:100%;max-width:580px;overflow-x:auto">
+    <table class="lbtable" id="lbtable"><thead><tr><th>#</th><th>Name</th><th>Topic</th><th>Score</th><th>Avg Speed</th><th>Date</th></tr></thead><tbody id="lbbody"></tbody></table>
+  </div>
+  <div class="btn-row" style="max-width:440px;width:100%">
+    <button class="btn btns" onclick="show('welcome')" style="flex:1">🏠 Home</button>
+    <button class="btn btns" onclick="clearLB()" style="flex:1;color:var(--a1)">🗑️ Clear</button>
+  </div>
+  <div class="brand" style="margin-top:14px">An initiative by <b>Tr. Salfa</b> · SR Perpindahan Kg. Lambak Kanan Jalan 10, Cluster 3</div>
+</div>
+
+</div>
+
+<script>
+/* ══ CUSTOM MODAL HELPERS ══════════════════════════════ */
+function _modal(icon,msg,sub,okLabel,onOk,showCancel){
+  document.getElementById('_mIcon').textContent=icon;
+  document.getElementById('_mMsg').textContent=msg;
+  document.getElementById('_mSub').textContent=sub;
+  document.getElementById('_mOk').textContent=okLabel;
+  document.getElementById('_mCancel').style.display=showCancel?'block':'none';
+  var m=document.getElementById('_modal');
+  m.style.display='flex';
+  document.getElementById('_mOk').onclick=function(){m.style.display='none';onOk();};
+}
+function _nameError(){
+  var el=document.getElementById('pname');
+  el.style.borderColor='#ff6b6b';
+  el.placeholder='Please enter your name first! 😊';
+  el.focus();
+  setTimeout(function(){el.style.borderColor='';el.placeholder='Enter your name…';},2500);
+}
+
+/* ══ SOUND ENGINE ══════════════════════════════════════ */
+let AC=null,sOn=true;
+function gac(){
+  if(!AC)AC=new(window.AudioContext||window.webkitAudioContext)();
+  if(AC.state==='suspended')AC.resume();
+  return AC;
+}
+function toggleSnd(){sOn=!sOn;document.getElementById('sndBtn').textContent=sOn?'🔊':'🔇';}
+function beep(t){
+  if(!sOn)return;
+  try{const c=gac();
+    if(t==='ok'){
+      [[523.25,0,.3],[659.25,.09,.26],[783.99,.18,.24],[1046.5,.27,.32]].forEach(([f,d,dr])=>{
+        const o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);
+        o.type='sine';o.frequency.value=f;
+        g.gain.setValueAtTime(0,c.currentTime+d);g.gain.linearRampToValueAtTime(.3,c.currentTime+d+.03);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+d+dr);
+        o.start(c.currentTime+d);o.stop(c.currentTime+d+dr+.02);
+      });
+    }else if(t==='no'){
+      [[310,0,.22],[240,.13,.22],[170,.26,.22]].forEach(([f,d,dr])=>{
+        const o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);
+        o.type='sawtooth';o.frequency.value=f;
+        g.gain.setValueAtTime(0,c.currentTime+d);g.gain.linearRampToValueAtTime(.2,c.currentTime+d+.04);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+d+dr);
+        o.start(c.currentTime+d);o.stop(c.currentTime+d+dr+.02);
+      });
+    }else if(t==='tick'){
+      const o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);
+      o.type='sine';o.frequency.value=880;
+      g.gain.setValueAtTime(0,c.currentTime);g.gain.linearRampToValueAtTime(.12,c.currentTime+.008);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.055);
+      o.start(c.currentTime);o.stop(c.currentTime+.06);
+    }else if(t==='fan'){
+      [523,659,784,1047,1319].forEach((f,i)=>{
+        const o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);
+        o.type='triangle';o.frequency.value=f;const d=i*.09;
+        g.gain.setValueAtTime(0,c.currentTime+d);g.gain.linearRampToValueAtTime(.35,c.currentTime+d+.04);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+d+.4);
+        o.start(c.currentTime+d);o.stop(c.currentTime+d+.42);
+      });
+    }else if(t==='clk'){
+      const o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);
+      o.type='sine';o.frequency.value=600;
+      g.gain.setValueAtTime(0,c.currentTime);g.gain.linearRampToValueAtTime(.1,c.currentTime+.007);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.05);
+      o.start(c.currentTime);o.stop(c.currentTime+.055);
+    }else if(t==='to'){
+      [0,.22].forEach(d=>{
+        const o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);
+        o.type='square';o.frequency.value=430;
+        g.gain.setValueAtTime(0,c.currentTime+d);g.gain.linearRampToValueAtTime(.16,c.currentTime+d+.02);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+d+.17);
+        o.start(c.currentTime+d);o.stop(c.currentTime+d+.19);
+      });
+    }
+  }catch(e){}
+}
+
+/* ══ STARS ═════════════════════════════════════════════ */
+(()=>{const c=document.getElementById('stars');for(let i=0;i<60;i++){const s=document.createElement('div');s.className='star';const z=Math.random()*2.5+1;s.style.cssText=`width:${z}px;height:${z}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${Math.random()*3+2}s;animation-delay:${Math.random()*6}s`;c.appendChild(s);}})();
+
+/* ══ YEAR 5 TOPICS DATA ═════════════════════════════════ */
+const TOPICS=[
+  {id:'y5t1a',th:1,icon:'🦎',name:'Classification of Living Things',sub:'Fungi, microorganisms & animal groups',qs:[
+    {q:"Which TWO NEW groups of organisms are introduced in Year 5?",o:["Fish and birds","Fungi and microorganisms","Reptiles and amphibians","Trees and shrubs"],a:1,e:"In Year 5, we learn about two new groups: FUNGI (like mushrooms and bread mould) and MICROORGANISMS (like bacteria and amoeba). Together with plants and animals, these are the four main groups."},
+    {q:"Which group do mushrooms belong to?",o:["Plants","Animals","Fungi","Microorganisms"],a:2,e:"Mushrooms belong to the FUNGI group. Fungi cannot make their own food like plants — they feed by breaking down dead organisms or living as parasites."},
+    {q:"Insects, fish, amphibians, reptiles, birds and mammals are all…",o:["Invertebrates","Vertebrates","Fungi","Microorganisms"],a:1,e:"Insects are actually invertebrates! Fish, amphibians, reptiles, birds, and mammals are all VERTEBRATES (animals with backbones). Insects are invertebrates (no backbone)."},
+    {q:"A simple key is used to…",o:["Make organisms grow faster","Place an organism in its correct group","Name organisms after scientists","Count organisms in a group"],a:1,e:"A simple key (branching key) is used to identify and place an organism into its correct group by asking yes/no questions about observable features."},
+    {q:"Which is a characteristic of INSECTS?",o:["4 legs, 2 body parts","6 legs, 3 body parts","8 legs, 2 body parts","No legs, 1 body part"],a:1,e:"Insects have 6 legs and 3 body parts (head, thorax, abdomen). Examples: ants, butterflies, beetles, mosquitoes."},
+    {q:"Which of these is a MAMMAL?",o:["Frog","Crocodile","Bat","Eagle"],a:2,e:"A bat is a MAMMAL — it has hair/fur, is warm-blooded, gives birth to live young, and feeds its young with milk. Frogs are amphibians, crocodiles are reptiles, and eagles are birds."},
+    {q:"Materials can be grouped by their ability to attract a MAGNET. This is called…",o:["Conductivity","Transparency","Magnetism","Solubility"],a:2,e:"Magnetism is the property of being attracted to a magnet. Iron and steel are magnetic materials. Plastic, wood, and aluminium are non-magnetic."},
+    {q:"Which material is TRANSPARENT to light?",o:["Wood","Metal","Clear glass","Rubber"],a:2,e:"Clear glass is transparent — light passes straight through it. Wood and metal are opaque (no light passes through). Frosted glass is translucent (some light passes through)."},
+  ]},
+  {id:'y5t1b',th:1,icon:'🐠',name:'Adaptation',sub:'How organisms suit their environment',qs:[
+    {q:"ADAPTATION means…",o:["An organism changing colour","Features that make an organism suitable for its environment","An organism moving to a new place","An organism eating different food"],a:1,e:"Adaptation refers to features (physical or behavioural) that make an organism well-suited to survive in its particular environment."},
+    {q:"Fish have GILLS because…",o:["Gills help them swim faster","Gills extract oxygen from water","Gills make them more colourful","Gills help them find food"],a:1,e:"Fish have gills as an adaptation to extract dissolved oxygen from water. This allows them to breathe underwater, unlike animals that breathe air."},
+    {q:"Which is an example of an adaptation for CLIMBING trees?",o:["Webbed feet","Sharp claws","Long tail","Thick fur"],a:1,e:"Sharp claws are an adaptation for climbing trees — they help animals grip onto bark and surfaces. Webbed feet are an adaptation for swimming."},
+    {q:"Webbed feet in ducks are an adaptation for…",o:["Running on land","Swimming in water","Climbing trees","Flying faster"],a:1,e:"Webbed feet are a swimming adaptation — the webbing between toes acts like a paddle, pushing water back to propel the duck forward."},
+    {q:"A cactus has thick stems as an adaptation to…",o:["Grow taller","Store water in dry environments","Attract more insects","Produce more seeds"],a:1,e:"A cactus stores water in its thick, fleshy stem as an adaptation to dry desert environments where water is scarce."},
+    {q:"Which environment would an animal with gills and fins BEST be adapted to?",o:["Desert","Rainforest","Aquatic (water)","Arctic tundra"],a:2,e:"Gills and fins are adaptations for an AQUATIC (water) environment. Gills extract oxygen from water, and fins provide movement and steering."},
+  ]},
+  {id:'y5t2a',th:2,icon:'💡',name:'Light',sub:'Sources, properties & shadows',qs:[
+    {q:"The MAIN source of light energy is…",o:["Fire","The Moon","The Sun","Electric bulb"],a:2,e:"The Sun is the main source of light energy. It provides the light that allows plants to make food through photosynthesis, supporting all life on Earth."},
+    {q:"Green plants use light energy to…",o:["Grow taller only","Produce food (photosynthesis)","Change colour","Reproduce faster"],a:1,e:"Green plants use light energy from the Sun to produce food through PHOTOSYNTHESIS. They convert carbon dioxide and water into glucose using sunlight."},
+    {q:"Light travels in…",o:["Curved lines","Zigzag patterns","Straight lines","Circular paths"],a:2,e:"Light travels in STRAIGHT LINES. You can observe this when you see a beam of sunlight through dust — it travels in a straight, unbroken line."},
+    {q:"A shadow is formed when…",o:["Light is reflected","An opaque object blocks light","Light bends around an object","Light is absorbed by water"],a:1,e:"A shadow forms when an OPAQUE object (one that doesn't let light through) blocks the path of light, creating a dark area behind it."},
+    {q:"The Moon is NOT a source of light because…",o:["The Moon is too small","The Moon only reflects light from the Sun","The Moon is too cold","The Moon is too far away"],a:1,e:"The Moon does NOT produce its own light — it only REFLECTS light from the Sun. Objects that reflect light but are not light sources include: moon, planets, and everyday objects."},
+    {q:"White light is a combination of…",o:["3 colours","5 colours","7 colours (a rainbow)","10 colours"],a:2,e:"White light is a combination of 7 visible colours: Red, Orange, Yellow, Green, Blue, Indigo, Violet (ROYGBIV). You can see these when white light passes through a prism."},
+    {q:"A frosted glass window is TRANSLUCENT because…",o:["No light passes through","All light passes through clearly","Some light passes through but not clearly","It reflects all light"],a:2,e:"Translucent materials allow SOME light to pass through, but the light is scattered so you cannot see clearly through them. Frosted glass is a good example."},
+  ]},
+  {id:'y5t2b',th:2,icon:'🔊',name:'Sound',sub:'Vibrations, travel & properties of sound',qs:[
+    {q:"Sound is produced by…",o:["Light energy","Vibrations","Heat energy","Chemical reactions"],a:1,e:"Sound is produced by VIBRATIONS — when an object vibrates (moves back and forth rapidly), it creates sound waves that travel through air to our ears."},
+    {q:"Sound can be heard when vibrations enter…",o:["Our eyes","Our nose","Our ears","Our skin"],a:2,e:"Sound can be heard when vibrations (sound waves) enter our EARS. The vibrations cause the eardrum to vibrate, which is detected by the brain as sound."},
+    {q:"A LOUDER sound has…",o:["Less energy","The same energy","More energy","No energy"],a:2,e:"A louder sound has MORE energy. The harder you hit a drum, the more energy transferred, creating larger vibrations and a louder sound."},
+    {q:"The further away you are from a sound source, the sound becomes…",o:["Louder","The same","Fainter/softer","Higher pitched"],a:2,e:"As you move further from the sound source, the sound energy spreads over a larger area, so it becomes FAINTER (softer). The greater the distance, the softer the sound."},
+    {q:"Sound travels through…",o:["Only gases","Only liquids","Only solids","Solids, liquids AND gases"],a:3,e:"Sound travels through SOLIDS, LIQUIDS, and GASES. It cannot travel in a vacuum (empty space). Sound actually travels fastest through solids and slowest through gases."},
+    {q:"A vibrating tuning fork placed on a water surface will…",o:["Sink immediately","Create ripples/disturb the water","Make the water freeze","Create light"],a:1,e:"A vibrating tuning fork placed on water creates RIPPLES because the vibrations transfer to the water. This demonstrates that sound is caused by vibrations."},
+  ]},
+  {id:'y5t2c',th:2,icon:'🧲',name:'Force, Movement & Magnets',sub:'Types of forces and magnetic properties',qs:[
+    {q:"A FORCE can cause a change in…",o:["Colour only","Speed, direction and shape","Temperature only","Taste only"],a:1,e:"A force can cause a change in SPEED (make things faster/slower), DIRECTION (change where something goes), and SHAPE (deform an object). Forces are pushes or pulls."},
+    {q:"FRICTION is a force that…",o:["Helps things move faster","Acts against movement","Attracts magnetic materials","Pulls objects down"],a:1,e:"FRICTION acts against movement — it slows down moving objects or prevents objects from starting to move. It occurs when two surfaces rub against each other."},
+    {q:"Which type of force keeps us on the ground?",o:["Elastic force","Frictional force","Force of gravity","Magnetic force"],a:2,e:"The FORCE OF GRAVITY (gravitational force) pulls all objects towards the centre of the Earth, keeping us on the ground and making dropped objects fall downward."},
+    {q:"A bar magnet has…",o:["1 pole","2 poles (North and South)","3 poles","No poles"],a:1,e:"A bar magnet has TWO poles: North (N) and South (S). The magnetic force is strongest at the poles."},
+    {q:"When two magnets are brought together, UNLIKE poles…",o:["Repel each other","Attract each other","Have no effect","Spin around"],a:1,e:"UNLIKE poles (North-South) ATTRACT each other. LIKE poles (North-North or South-South) REPEL each other. This is a fundamental property of magnets."},
+    {q:"Magnets attract…",o:["All metals","Only iron and steel (magnetic materials)","All materials","Only gold and silver"],a:1,e:"Magnets only attract MAGNETIC MATERIALS such as iron and steel. Not all metals are magnetic — aluminium, copper, and gold are NOT attracted to magnets."},
+    {q:"When a bar magnet is suspended freely, it points in which direction?",o:["East-West","Up-Down","North-South","Any random direction"],a:2,e:"A freely suspended bar magnet always aligns in the NORTH-SOUTH direction. This property is used in compasses to help navigate and find directions."},
+  ]},
+  {id:'y5t3a',th:3,icon:'🐛',name:'Life Cycle of Animals',sub:'Stages and comparison of animal cycles',qs:[
+    {q:"The life cycle of a butterfly includes which stages?",o:["Egg → Larva → Adult","Egg → Larva → Pupa → Adult","Egg → Adult only","Egg → Pupa → Adult"],a:1,e:"A butterfly's complete life cycle is: Egg → Larva (caterpillar) → Pupa (chrysalis) → Adult butterfly. This is called complete metamorphosis."},
+    {q:"Which animal has the life cycle: Egg → Tadpole → Frog?",o:["Butterfly","Housefly","Frog (amphibian)","Mosquito"],a:2,e:"A FROG undergoes incomplete metamorphosis: Egg → Tadpole (larva stage that lives in water) → Young frog → Adult frog. Tadpoles breathe with gills, adult frogs breathe with lungs."},
+    {q:"Why are external factors important for an animal's life cycle?",o:["They make animals look nicer","They are needed for the animal to complete its life cycle successfully","They have no effect","They make animals run faster"],a:1,e:"External factors (like temperature, availability of food, water, and shelter) are needed for the animal to complete its life cycle. Without them, the animal may not survive to reproduce."},
+    {q:"Offspring resemble their parents because…",o:["They eat the same food","They live in the same place","They take on their parents' characteristics (inheritance)","They have the same friends"],a:2,e:"Offspring resemble their parents because they INHERIT characteristics from their parents. This is why children often look like their parents or have similar features."},
+    {q:"Which pair has an egg stage in its life cycle?",o:["Dog and cat","Mosquito and bird","Horse and cow","Whale and dolphin"],a:1,e:"Both mosquitoes and birds lay EGGS as the first stage of their life cycle. Dogs, cats, horses, cows, whales, and dolphins are all mammals that give birth to live young."},
+    {q:"The life cycle of a mammal includes…",o:["Egg, larva, pupa, adult","Live birth, growth to juvenile, adult","Egg, tadpole, adult","Egg, nymph, adult"],a:1,e:"Mammals give birth to LIVE YOUNG (no egg stage outside the body). The life cycle involves live birth, growth from juvenile to adult, then reproduction."},
+  ]},
+  {id:'y5t4a',th:4,icon:'🦠',name:'Infectious Diseases',sub:'Causes, spread & prevention',qs:[
+    {q:"Which organisms cause infectious diseases?",o:["Large animals","Microorganisms (germs)","Chemicals only","Temperature changes"],a:1,e:"Infectious diseases are caused by MICROORGANISMS (germs) — including bacteria, viruses, fungi, and parasites. They are called infectious because they can spread from person to person."},
+    {q:"How is INFLUENZA (flu) mainly spread?",o:["Through contaminated food","Through air and contact","Through mosquito bites","Through contaminated water"],a:1,e:"Influenza (flu) spreads mainly through AIR and CONTACT — coughing, sneezing, or touching surfaces contaminated with the virus, then touching your face."},
+    {q:"MALARIA is spread through…",o:["Contaminated water","Contaminated food","Mosquito bites","Person to person contact"],a:2,e:"MALARIA is spread through the bites of infected Anopheles mosquitoes. The mosquito acts as a carrier (vector) of the malaria parasite, transmitting it to humans through its bite."},
+    {q:"Which disease spreads through contaminated WATER and FOOD?",o:["Influenza","Red eye (conjunctivitis)","Cholera and food poisoning","Tuberculosis"],a:2,e:"CHOLERA and FOOD POISONING spread through contaminated water and food. The bacteria (Vibrio cholerae for cholera) are ingested and cause severe diarrhoea and vomiting."},
+    {q:"The BEST way to prevent the spread of infectious diseases is to…",o:["Eat more sweets","Wash body parts with soap and water, and practise healthy habits","Stay indoors all day","Only eat at home"],a:1,e:"Washing hands and body parts with soap and water removes germs effectively. Good hygiene habits, proper food handling, and vaccination are key ways to prevent disease spread."},
+    {q:"'Red eye' (conjunctivitis) spreads mainly through…",o:["Mosquito bites","Direct contact (touching infected eyes/surfaces then touching your own)","Contaminated water","Airborne particles"],a:1,e:"'Red eye' (conjunctivitis) spreads mainly through DIRECT CONTACT — touching infected eyes or contaminated surfaces, then touching your own eyes."},
+  ]},
+  {id:'y5t5a',th:5,icon:'🌺',name:'Plant Systems',sub:'Root system, shoot system & photosynthesis',qs:[
+    {q:"The TWO main systems of a plant are…",o:["Stem system and leaf system","Root system and shoot system","Flower system and seed system","Bark system and branch system"],a:1,e:"A plant has two main systems: the ROOT SYSTEM (underground — roots and root hairs) and the SHOOT SYSTEM (above ground — stem, leaves, flowers, fruits, seeds)."},
+    {q:"The TWO main functions of the root system are…",o:["Make food and reproduce","Hold the plant to the ground and absorb water and minerals","Produce flowers and fruit","Store energy and produce seeds"],a:1,e:"The root system: (1) ANCHORS/holds the plant firmly in the ground, and (2) ABSORBS water and minerals from the soil through root hairs."},
+    {q:"What is the function of LEAVES?",o:["To hold up the plant","To transport water","To make food for the plant (photosynthesis)","To absorb water from soil"],a:2,e:"Leaves are the main site of PHOTOSYNTHESIS — they make food for the plant using water (from roots), carbon dioxide (from air), and sunlight."},
+    {q:"Photosynthesis uses…",o:["Oxygen, sugar and darkness","Water, carbon dioxide and sunlight","Nitrogen, heat and sugar","Salt, light and oxygen"],a:1,e:"Photosynthesis uses: WATER (absorbed by roots), CARBON DIOXIDE (from air through tiny openings in leaves), and SUNLIGHT (energy source) to produce glucose (food) and oxygen."},
+    {q:"Water travels from roots to leaves through…",o:["The bark","Tubes in the stem","The flowers","The fruit"],a:1,e:"Water travels from the roots upward through TUBES in the stem (we use the word 'tubes' instead of xylem at this level). These tubes form a continuous transport network."},
+    {q:"The function of FLOWERS is to…",o:["Make food for the plant","Transport water","Form fruits and seeds (reproduction)","Absorb water from soil"],a:2,e:"FLOWERS are the reproductive organs of a plant. Their function is to form fruits and seeds through pollination and fertilisation, allowing the plant to reproduce."},
+    {q:"Fruits and seeds develop from…",o:["Stem and leaves","Sepals and petals","The ovary and ovules respectively","Roots and root hairs"],a:2,e:"FRUIT develops from the OVARY (after fertilisation), and SEEDS develop from the OVULES. The fruit protects the seeds and helps with their dispersal."},
+    {q:"The STAMEN is the male part of a flower. It consists of…",o:["Stigma and style","Sepal and petal","Filament and anther","Ovary and ovule"],a:2,e:"The STAMEN (male part) consists of the FILAMENT (stalk) and ANTHER (produces pollen). The pistil (female part) consists of stigma, style, ovary, and ovule."},
+  ]},
+];
+
+/* ══ STATE ══════════════════════════════════════════════ */
+let player='',cTopic=null,cQs=[],qi=0;
+let score=0,streak=0,best=0,wrongs=0,tt=0,tpq=[];
+let tiv=null,tl=30,qs=0,answered=false;
+let prev={},qMode=0;
+
+/* ══ SCREEN ═════════════════════════════════════════════ */
+function show(id){
+  document.querySelectorAll('.scr').forEach(s=>s.classList.remove('on'));
+  document.getElementById('scr-'+id).classList.add('on');
+  window.scrollTo(0,0);
+}
+
+/* ══ WELCOME → TOPICS ═══════════════════════════════════ */
+function goTopics(){
+  const inp=document.getElementById('pname');
+  if(inp&&inp.value.trim())player=inp.value.trim();
+  if(!player){_nameError();return;}
+  document.getElementById('wmsg').textContent=`Hello ${player}! Pick a Year 5 topic! 🌟`;
+  buildGrid(); show('topics'); beep('clk');
+}
+
+function setMode(m){
+  qMode=m;
+  document.getElementById('mq5').classList.toggle('sel',m===5);
+  document.getElementById('mAll').classList.toggle('sel',m===0);
+}
+
+function buildGrid(){
+  const g=document.getElementById('tgrid');
+  const tn={1:'🌿 Theme 1 — Variety, Classification & Adaptation',2:'⚡ Theme 2 — Energy & Forces',3:'🌊 Theme 3 — Cycles',4:'💪 Theme 4 — Personal Health',5:'🌺 Theme 5 — Plant Systems'};
+  const tlc=['','tl1','tl2','tl3','tl4','tl5'];
+  const byt={};TOPICS.forEach(t=>{if(!byt[t.th])byt[t.th]=[];byt[t.th].push(t);});
+  g.innerHTML='';
+  Object.keys(byt).sort().forEach(n=>{
+    const d=document.createElement('div');d.className='tdiv';d.textContent=tn[n];g.appendChild(d);
+    byt[n].forEach(t=>{
+      const p=prev[t.id];
+      const badge=p?`<span class="tb ${tlc[t.th]}">Last: ${p.score}/${p.total}</span>`:`<span class="tb ${tlc[t.th]}">NEW ✨</span>`;
+      const b=document.createElement('button');b.className=`tbtn th${t.th}`;
+      b.innerHTML=`<span class="ti">${t.icon}</span><div class="tnfo"><div class="tn">${t.name}</div><div class="ts">${t.sub}</div></div>${badge}`;
+      b.onclick=()=>{beep('clk');startTopic(t);};g.appendChild(b);
+    });
+  });
+}
+
+/* ══ QUIZ ════════════════════════════════════════════════ */
+function startTopic(t){
+  cTopic=t;let pool=shuf([...t.qs]);
+  if(qMode===5)pool=pool.slice(0,5);
+  cQs=pool;qi=0;score=0;streak=0;best=0;wrongs=0;tt=0;tpq=[];
+  document.getElementById('qbadge').textContent=`${t.icon} ${t.name}`;
+  upStrip(); show('quiz'); loadQ();
+}
+
+function shuf(a){for(let i=a.length-1;i>0;i--){const j=~~(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+function loadQ(){
+  if(qi>=cQs.length){showResult();return;}
+  answered=false;const q=cQs[qi];
+  document.getElementById('qcnt').textContent=`Q${qi+1}/${cQs.length}`;
+  document.getElementById('qtxt').textContent=q.q;
+  const order=shuf([0,1,2,3]);q._si=order.indexOf(q.a);
+  const og=document.getElementById('opts');og.innerHTML='';
+  ['A','B','C','D'].forEach((lbl,di)=>{
+    const b=document.createElement('button');b.className='obtn';b.dataset.di=di;
+    b.innerHTML=`<span class="olbl">${lbl}</span>${q.o[order[di]]}`;
+    b.onclick=()=>pick(b,di,q);og.appendChild(b);
+  });
+  document.getElementById('fbcard').classList.remove('on','correct','wrong');
+  document.getElementById('nxtwrap').classList.remove('on');
+  startTimer(q); qs=Date.now();
+}
+
+function startTimer(q){
+  clearInterval(tiv);tl=30;upTimer();
+  tiv=setInterval(()=>{tl--;if(tl<=5&&tl>0)beep('tick');upTimer();if(tl<=0){clearInterval(tiv);if(!answered)doTimeout(q);}},1000);
+}
+
+function upTimer(){
+  const b=document.getElementById('tbar'),n=document.getElementById('tnum');
+  b.style.width=(tl/30*100)+'%';n.textContent=tl;
+  if(tl<=8){b.classList.add('warn');n.classList.add('warn');}else{b.classList.remove('warn');n.classList.remove('warn');}
+}
+
+function pick(btn,di,q){
+  if(answered)return;answered=true;clearInterval(tiv);
+  const el=Math.max(1,~~((Date.now()-qs)/1000));tpq.push(el);tt+=el;
+  const ok=(di===q._si);
+  document.querySelectorAll('.obtn').forEach((b,i)=>{b.classList.add('dis');if(i===q._si)b.classList.add('revc');});
+  if(ok){btn.classList.add('correct');score++;streak++;if(streak>best)best=streak;beep('ok');}
+  else{btn.classList.add('wrong');streak=0;wrongs++;beep('no');}
+  upStrip();showFB(ok,q,el);
+}
+
+function doTimeout(q){
+  answered=true;
+  document.querySelectorAll('.obtn').forEach((b,i)=>{b.classList.add('dis');if(i===q._si)b.classList.add('revc');});
+  streak=0;wrongs++;tpq.push(30);tt+=30;upStrip();showFB(false,q,30,true);beep('to');
+}
+
+function showFB(ok,q,el,to=false){
+  const fc=document.getElementById('fbcard');fc.classList.remove('correct','wrong');
+  if(to){
+    document.getElementById('fbe').textContent='⏰';
+    document.getElementById('fbt').textContent="Time's Up!";
+    document.getElementById('fbt').className='fbt wrong';fc.classList.add('wrong');
+    document.getElementById('fbtx').textContent=`You ran out of time! ${q.e}`;
+  }else if(ok){
+    const es=['🎉','⭐','🌟','🏆','🎯','💪','🔥','✨'];
+    const ms=['Amazing!','Correct!','Brilliant!','Well Done!','Superstar!','Nailed It!','Fantastic!','You Rock!'];
+    document.getElementById('fbe').textContent=es[~~(Math.random()*es.length)];
+    document.getElementById('fbt').textContent=ms[~~(Math.random()*ms.length)]+(el<=8?' ⚡ Super Fast!':'');
+    document.getElementById('fbt').className='fbt correct';fc.classList.add('correct');
+    document.getElementById('fbtx').textContent=q.e;
+  }else{
+    const we=['😢','😬','🤔','💡','📖'];
+    document.getElementById('fbe').textContent=we[~~(Math.random()*we.length)];
+    document.getElementById('fbt').textContent='Not Quite!';
+    document.getElementById('fbt').className='fbt wrong';fc.classList.add('wrong');
+    document.getElementById('fbtx').textContent=`Correct answer: "${q.o[q.a]}". ${q.e}`;
+  }
+  fc.classList.add('on');document.getElementById('nxtwrap').classList.add('on');
+  setTimeout(()=>{fc.scrollIntoView({behavior:'smooth',block:'nearest'});},100);
+}
+
+function upStrip(){
+  document.getElementById('s0').textContent=score;document.getElementById('s1').textContent=streak;
+  const a=tpq.length?~~(tt/tpq.length):null;document.getElementById('s2').textContent=a?a+'s':'–';
+}
+
+function nextQ(){beep('clk');qi++;document.getElementById('fbcard').classList.remove('on');document.getElementById('nxtwrap').classList.remove('on');loadQ();}
+
+document.addEventListener('keydown',e=>{if((e.code==='Space'||e.code==='Enter')&&document.getElementById('nxtwrap').classList.contains('on'))nextQ();});
+
+/* ══ RESULTS ════════════════════════════════════════════ */
+function showResult(){
+  clearInterval(tiv);const tot=cQs.length,pct=~~(score/tot*100);
+  const avg=tpq.length?~~(tt/tpq.length):0;
+  let trophy,msg;
+  if(pct===100){trophy='🏆';msg="PERFECT SCORE! You're a Science Champion!";}
+  else if(pct>=80){trophy='🥇';msg=`Excellent work, ${player}!`;}
+  else if(pct>=60){trophy='🥈';msg='Good job, keep practicing!';}
+  else if(pct>=40){trophy='🥉';msg="Getting there! Try again!";}
+  else{trophy='📚';msg='Study and try again — you can do it!';}
+  document.getElementById('rtr').textContent=trophy;
+  document.getElementById('rn').textContent=`${player}'s Result`;
+  document.getElementById('rs').textContent=`${score}/${tot}`;
+  document.getElementById('rsb').textContent=`${pct}% · ${msg}`;
+  document.getElementById('r0').textContent=score;document.getElementById('r1').textContent=wrongs;
+  document.getElementById('r2').textContent=avg+'s';document.getElementById('r3').textContent=best;
+  const p=prev[cTopic.id];const bn=document.getElementById('ibanner');
+  bn.classList.remove('up','dn');
+  if(p){
+    const su=score>p.score,tu=avg<p.avgTime,imp=su||(score>=p.score&&tu);
+    if(imp){
+      bn.classList.add('up');document.getElementById('ibe').textContent='🎊🌟🎊';
+      document.getElementById('ibt').textContent='IMPROVEMENT!';
+      document.getElementById('ibtx').textContent=su?`+${score-p.score} more correct than last time! Amazing!`:`Same score but ${p.avgTime-avg}s faster!`;
+      if(pct>=60){confetti();if(pct>=80)beep('fan');}
+    }else{
+      bn.classList.add('dn');document.getElementById('ibe').textContent='😢';
+      document.getElementById('ibt').textContent='Keep Trying!';
+      document.getElementById('ibtx').textContent=`You had ${p.score}/${p.total} before. Review and try again!`;
+    }
+  }else{
+    bn.classList.add('up');document.getElementById('ibe').textContent='⭐';
+    document.getElementById('ibt').textContent='First Attempt!';
+    document.getElementById('ibtx').textContent='Practice again to improve your score!';
+    if(pct>=60){confetti();if(pct===100)beep('fan');}
+  }
+  prev[cTopic.id]={score,total:tot,avgTime:avg};
+  const stars=pct===100?'⭐⭐⭐':pct>=80?'⭐⭐':'⭐';
+  document.getElementById('shareText').innerHTML=`<b>${player}</b> scored <b>${score}/${tot} (${pct}%)</b><br>Topic: ${cTopic.name} | Year 5 Science<br>Avg Speed: ${avg}s per question<br>${stars}<br><i>Science Quest by Tr. Salfa · SR Perpindahan Kg. Lambak Kanan</i>`;
+  saveLB({name:player,topic:cTopic.name,score,total:tot,pct,avg,date:new Date().toLocaleDateString('en-GB')});
+  show('result');
+}
+
+function retry(){beep('clk');startTopic(cTopic);}
+
+function confBack(){
+  clearInterval(tiv);
+  _modal('⬅','Go back to topics?','Your current quiz progress will be lost.','Go Back',function(){beep('clk');goTopics();},true);
+}
+
+/* ══ LEADERBOARD ════════════════════════════════════════ */
+function saveLB(entry){
+  try{let lb=JSON.parse(localStorage.getItem('y5sciLB')||'[]');lb.unshift(entry);lb=lb.slice(0,50);localStorage.setItem('y5sciLB',JSON.stringify(lb));}catch(e){}
+}
+
+function goLB(){buildLB();show('lb');beep('clk');}
+
+function buildLB(){
+  try{
+    const lb=JSON.parse(localStorage.getItem('y5sciLB')||'[]');
+    const tbody=document.getElementById('lbbody');
+    if(lb.length===0){tbody.innerHTML=`<tr><td colspan="6" class="lbempty">No scores yet. Play a quiz first! 🎮</td></tr>`;return;}
+    tbody.innerHTML=lb.slice(0,20).map((e,i)=>`<tr><td>${i===0?'🥇':i===1?'🥈':i===2?'🥉':i+1}</td><td>${e.name}</td><td style="font-size:.73rem">${e.topic}</td><td><b>${e.score}/${e.total}</b> <span style="color:var(--muted);font-size:.73rem">(${e.pct}%)</span></td><td>${e.avg}s</td><td style="font-size:.7rem;color:var(--muted)">${e.date}</td></tr>`).join('');
+  }catch(e){document.getElementById('lbbody').innerHTML='<tr><td colspan="6" class="lbempty">Could not load scores.</td></tr>';}
+}
+
+function clearLB(){
+  _modal('🗑️','Clear all scores?','This will delete ALL Year 5 leaderboard scores on this device.','Clear All',function(){
+    try{localStorage.removeItem('y5sciLB');}catch(e){}
+    buildLB();
+  },true);
+}
+
+/* ══ CONFETTI ════════════════════════════════════════════ */
+function confetti(){
+  const cs=['#ffd93d','#ff6b6b','#6bcb77','#4d96ff','#c77dff','#fff'];
+  for(let i=0;i<70;i++){
+    const el=document.createElement('div');el.className='cfp';
+    const c=cs[~~(Math.random()*cs.length)],d=Math.random()*2+1.5;
+    el.style.cssText=`left:${Math.random()*100}vw;background:${c};--d:${d}s;animation-delay:${Math.random()*.5}s;width:${Math.random()*10+5}px;height:${Math.random()*10+5}px;border-radius:${Math.random()>.5?'50%':'2px'}`;
+    document.body.appendChild(el);setTimeout(()=>el.remove(),(d+.6)*1000);
+  }
+}
+
+/* ══ INIT ════════════════════════════════════════════════ */
+show('welcome');
+</script>
+</body>
+</html>

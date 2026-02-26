@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Science Quest – Year 4 | Tr. Salfa</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --border:rgba(255,255,255,0.15);
+  --muted:rgba(255,255,255,0.55);
+  --correct:#6bcb77; --wrong:#ff6b6b;
+  --a1:#ff6b6b; --a2:#ffd93d; --a3:#6bcb77; --a4:#4d96ff; --a5:#c77dff;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{
+  font-family:'Nunito',sans-serif;
+  background:linear-gradient(135deg,#0f0c29 0%,#302b63 50%,#24243e 100%);
+  min-height:100vh;color:#fff;overflow-x:hidden;
+}
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(ellipse at 15% 15%,rgba(77,150,255,.18) 0%,transparent 55%),
+             radial-gradient(ellipse at 85% 85%,rgba(199,125,255,.18) 0%,transparent 55%);
+}
+.stars{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.star{position:absolute;background:#fff;border-radius:50%;animation:twinkle var(--d,3s) ease-in-out infinite;opacity:0}
+@keyframes twinkle{0%,100%{opacity:0;transform:scale(.5)}50%{opacity:.9;transform:scale(1)}}
+
+/* ── Sound toggle ── */
+#soundBtn{position:fixed;top:14px;right:14px;z-index:200;background:rgba(255,255,255,.12);border:1.5px solid var(--border);border-radius:50%;width:42px;height:42px;display:flex;align-items:center;justify-content:center;font-size:1.25rem;cursor:pointer;transition:.2s;user-select:none}
+#soundBtn:hover{background:rgba(255,255,255,.22)}
+
+/* ── App wrapper ── */
+#app{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:20px 16px 32px}
+
+/* ── Screens ── */
+.screen{display:none;width:100%;animation:fadeUp .4s ease}
+.screen.active{display:flex;flex-direction:column;align-items:center}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── Brand footer ── */
+.brand-footer{text-align:center;margin-top:16px;color:var(--muted);font-size:.72rem;line-height:1.8}
+.brand-footer strong{color:var(--a2)}
+
+/* ── Logo ── */
+.logo{text-align:center;margin-bottom:18px}
+.logo .er{font-size:2.1rem;animation:bounce 2s infinite;margin-bottom:5px}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.logo h1{font-family:'Fredoka One',cursive;font-size:clamp(1.9rem,5vw,3.2rem);background:linear-gradient(135deg,#ffd93d,#ff6b6b,#c77dff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.1}
+.logo p{color:var(--muted);font-size:.88rem;margin-top:5px}
+
+/* ── Card ── */
+.card{background:rgba(255,255,255,.08);backdrop-filter:blur(18px);border:1px solid var(--border);border-radius:22px;padding:24px;width:100%;max-width:440px}
+
+/* ── Input ── */
+.ig{margin-bottom:16px}
+.ig label{display:block;font-weight:800;margin-bottom:7px;color:var(--a2);font-size:.83rem;text-transform:uppercase;letter-spacing:1px}
+.ig input{width:100%;padding:13px 16px;background:rgba(255,255,255,.1);border:2px solid var(--border);border-radius:13px;color:#fff;font-family:'Nunito',sans-serif;font-size:1.05rem;font-weight:700;outline:none;transition:.25s}
+.ig input:focus{border-color:var(--a4);background:rgba(77,150,255,.15)}
+.ig input::placeholder{color:rgba(255,255,255,.3)}
+
+/* ── Buttons ── */
+.btn{width:100%;padding:14px;border:none;border-radius:14px;font-family:'Fredoka One',cursive;font-size:1.2rem;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+.btn::after{content:'';position:absolute;inset:0;background:#fff;opacity:0;transition:.15s}
+.btn:active::after{opacity:.15}
+.btn-primary{background:linear-gradient(135deg,#4d96ff,#c77dff);color:#fff;box-shadow:0 8px 22px rgba(77,150,255,.38)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(77,150,255,.48)}
+.btn-primary:active{transform:scale(.97)}
+.btn-secondary{background:rgba(255,255,255,.1);color:#fff;border:2px solid var(--border);font-family:'Nunito',sans-serif;font-size:1rem;font-weight:800;padding:12px}
+.btn-secondary:hover{background:rgba(255,255,255,.17)}
+
+/* ═══════════════════════ TOPICS ═══════════════════════ */
+#screen-topics{max-width:920px}
+.topics-hd{text-align:center;margin-bottom:14px;width:100%}
+.topics-hd h2{font-family:'Fredoka One',cursive;font-size:clamp(1.5rem,3.5vw,2.2rem);background:linear-gradient(135deg,#ffd93d,#c77dff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.topics-hd p{color:var(--muted);font-size:.88rem;margin-top:4px}
+
+.topic-grid{display:grid;gap:9px;width:100%;grid-template-columns:1fr}
+@media(min-width:620px){.topic-grid{grid-template-columns:1fr 1fr}}
+
+.tdiv{grid-column:1/-1;font-family:'Fredoka One',cursive;font-size:.82rem;color:rgba(255,255,255,.38);padding:10px 4px 3px;letter-spacing:1px;text-transform:uppercase;border-top:1px solid rgba(255,255,255,.08);margin-top:4px}
+.tdiv:first-child{border-top:none;margin-top:0}
+
+.tbtn{display:flex;align-items:center;gap:11px;background:rgba(255,255,255,.07);border:2px solid var(--border);border-radius:14px;padding:12px 14px;cursor:pointer;transition:all .2s;color:#fff;font-family:'Nunito',sans-serif;font-weight:800;font-size:.9rem;text-align:left;width:100%}
+.tbtn:hover{transform:translateY(-2px);box-shadow:0 5px 18px rgba(0,0,0,.3)}
+.tbtn:active{transform:scale(.97)}
+.ti{font-size:1.6rem;min-width:32px;text-align:center}
+.tnfo{flex:1}
+.tn{font-size:.9rem} .ts{font-size:.7rem;color:var(--muted);margin-top:2px}
+.tb{font-size:.67rem;padding:3px 8px;border-radius:20px;font-weight:900;white-space:nowrap}
+.tbtn.th1{border-color:rgba(107,203,119,.4)} .tbtn.th1:hover{background:rgba(107,203,119,.12);border-color:var(--correct)}
+.tbtn.th2{border-color:rgba(255,107,107,.4)} .tbtn.th2:hover{background:rgba(255,107,107,.12);border-color:var(--a1)}
+.tbtn.th3{border-color:rgba(77,150,255,.4)}  .tbtn.th3:hover{background:rgba(77,150,255,.12);border-color:var(--a4)}
+.tbtn.th4{border-color:rgba(255,217,61,.4)}  .tbtn.th4:hover{background:rgba(255,217,61,.12);border-color:var(--a2)}
+.tbtn.th5{border-color:rgba(199,125,255,.4)} .tbtn.th5:hover{background:rgba(199,125,255,.12);border-color:var(--a5)}
+.tl1{background:rgba(107,203,119,.22);color:var(--correct)} .tl2{background:rgba(255,107,107,.22);color:var(--a1)}
+.tl3{background:rgba(77,150,255,.22);color:var(--a4)}       .tl4{background:rgba(255,217,61,.22);color:var(--a2)}
+.tl5{background:rgba(199,125,255,.22);color:var(--a5)}
+
+/* ═══════════════════════ QUIZ ═══════════════════════ */
+#screen-quiz{max-width:1100px;width:100%}
+
+.quiz-header{display:flex;align-items:center;gap:10px;margin-bottom:12px;width:100%}
+.qbadge{flex:1;background:rgba(255,255,255,.1);border-radius:10px;padding:6px 12px;font-size:.82rem;font-weight:800;color:var(--a2);text-align:center}
+.qcnt{font-family:'Fredoka One',cursive;font-size:.97rem;color:var(--muted);white-space:nowrap}
+.backbtn{background:none;border:none;color:var(--muted);cursor:pointer;font-size:1.4rem;line-height:1;padding:3px}
+.backbtn:hover{color:#fff}
+
+.scorestrip{display:flex;gap:7px;margin-bottom:11px;width:100%}
+.schip{flex:1;background:rgba(255,255,255,.08);border-radius:10px;padding:6px;text-align:center}
+.schip .sv{font-family:'Fredoka One',cursive;font-size:1.3rem}
+.schip .sl{font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.3px}
+.schip.sg .sv{color:var(--correct)} .schip.sy .sv{color:var(--a2)} .schip.sb .sv{color:var(--a4)}
+
+.timer-wrap{margin-bottom:11px;width:100%}
+.tbar-bg{background:rgba(255,255,255,.1);border-radius:20px;height:11px;overflow:hidden}
+.tbar{height:100%;border-radius:20px;transition:width 1s linear,background .8s;background:linear-gradient(90deg,#6bcb77,#ffd93d)}
+.tbar.warn{background:linear-gradient(90deg,#ffd93d,#ff6b6b)}
+.tnum{text-align:right;font-family:'Fredoka One',cursive;font-size:1.35rem;margin-top:3px;transition:color .4s}
+.tnum.warn{color:var(--a1);animation:tpulse .5s infinite}
+@keyframes tpulse{0%,100%{transform:scale(1)}50%{transform:scale(1.18)}}
+
+/* ── DESKTOP: two-column quiz body ── */
+.qbody{display:flex;flex-direction:column;gap:11px;width:100%}
+@media(min-width:800px){
+  .qbody{flex-direction:row;align-items:flex-start;gap:18px}
+  .qleft{flex:1.1;display:flex;flex-direction:column;gap:11px;min-width:0}
+  .qright{flex:.95;display:flex;flex-direction:column;gap:11px;min-width:0}
+}
+.qleft,.qright{display:flex;flex-direction:column;gap:11px;width:100%}
+
+.qcard{background:rgba(255,255,255,.08);border:2px solid var(--border);border-radius:17px;padding:18px;min-height:100px;display:flex;align-items:center;width:100%}
+.qtext{font-size:clamp(.98rem,2.4vw,1.18rem);font-weight:800;line-height:1.55;text-align:center;width:100%}
+
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%}
+.obtn{padding:13px 10px;border-radius:13px;border:2px solid var(--border);background:rgba(255,255,255,.07);color:#fff;font-family:'Nunito',sans-serif;font-weight:800;font-size:.86rem;cursor:pointer;transition:all .2s;text-align:center;line-height:1.35;position:relative;overflow:hidden;min-height:65px;display:flex;align-items:center;justify-content:center}
+.obtn:hover:not(.disabled){background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.35);transform:translateY(-2px)}
+.obtn:active{transform:scale(.95)}
+.obtn.correct{background:rgba(107,203,119,.3);border-color:var(--correct);animation:pok .5s ease}
+.obtn.wrong  {background:rgba(255,107,107,.3);border-color:var(--a1);animation:shk .4s ease}
+.obtn.revc   {background:rgba(107,203,119,.22);border-color:var(--correct)}
+.obtn.disabled{pointer-events:none}
+.olbl{position:absolute;top:5px;left:7px;font-family:'Fredoka One',cursive;font-size:.82rem;opacity:.42}
+@keyframes pok{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+@keyframes shk{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+
+.fbcard{border-radius:17px;padding:15px;animation:slideUp .4s ease;display:none;width:100%}
+.fbcard.show{display:block}
+.fbcard.correct{background:rgba(107,203,119,.17);border:2px solid var(--correct)}
+.fbcard.wrong  {background:rgba(255,107,107,.12);border:2px solid rgba(255,107,107,.48)}
+@keyframes slideUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.fbe{font-size:2rem;text-align:center;margin-bottom:6px}
+.fbt{font-family:'Fredoka One',cursive;font-size:1.18rem;text-align:center;margin-bottom:6px}
+.fbt.correct{color:var(--correct)} .fbt.wrong{color:var(--a1)}
+.fbtx{font-size:.84rem;line-height:1.65;color:rgba(255,255,255,.88);text-align:center}
+
+.nxtwrap{display:none;width:100%}
+.nxtwrap.show{display:block}
+.hint{font-size:.7rem;color:var(--muted);text-align:center;margin-top:5px}
+
+/* ═══════════════════════ RESULT ═══════════════════════ */
+#screen-result{max-width:600px}
+.res-hero{text-align:center;margin-bottom:18px;width:100%}
+.rtrophy{font-size:4.5rem;animation:tin .8s ease}
+@keyframes tin{0%{transform:scale(0)rotate(-20deg)}70%{transform:scale(1.2)rotate(5deg)}100%{transform:scale(1)rotate(0)}}
+.rname{font-family:'Fredoka One',cursive;font-size:1.65rem;margin-top:9px}
+.rscore{font-family:'Fredoka One',cursive;font-size:3.6rem;background:linear-gradient(135deg,#ffd93d,#ff6b6b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.1}
+.rsub{color:var(--muted);margin-top:4px;font-size:.85rem}
+.sgrid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:15px;width:100%}
+.sbox{background:rgba(255,255,255,.07);border-radius:14px;padding:14px;text-align:center}
+.sbox .sv{font-family:'Fredoka One',cursive;font-size:1.85rem}
+.sbox .sl{font-size:.7rem;color:var(--muted);margin-top:3px}
+.sbox.sg{border:2px solid rgba(107,203,119,.35)} .sbox.sg .sv{color:var(--correct)}
+.sbox.sb{border:2px solid rgba(77,150,255,.35)}  .sbox.sb .sv{color:var(--a4)}
+.sbox.sy{border:2px solid rgba(255,217,61,.35)}  .sbox.sy .sv{color:var(--a2)}
+.sbox.sp{border:2px solid rgba(199,125,255,.35)} .sbox.sp .sv{color:var(--a5)}
+.ibanner{border-radius:17px;padding:15px;text-align:center;margin-bottom:16px;animation:fadeUp .6s .3s both;width:100%}
+.ibanner.up  {background:linear-gradient(135deg,rgba(107,203,119,.22),rgba(77,150,255,.14));border:2px solid var(--correct)}
+.ibanner.down{background:rgba(255,107,107,.12);border:2px solid rgba(255,107,107,.38)}
+.ibe{font-size:2.6rem;margin-bottom:5px}
+.ibt{font-family:'Fredoka One',cursive;font-size:1.28rem}
+.ibtx{font-size:.8rem;color:var(--muted);margin-top:4px}
+.btnrow{display:flex;gap:9px;width:100%}
+.btnrow .btn{font-size:1rem}
+
+/* confetti */
+.cfp{position:fixed;pointer-events:none;z-index:999;animation:cff var(--d) ease-in forwards}
+@keyframes cff{0%{transform:translateY(-20px)rotate(0);opacity:1}100%{transform:translateY(110vh)rotate(720deg);opacity:0}}
+
+/* scrollable */
+.scr{overflow-y:auto;padding-right:3px;width:100%}
+@media(max-width:799px){.scr{max-height:60vh}}
+@media(min-width:800px){.scr{max-height:72vh}}
+.scr::-webkit-scrollbar{width:4px}
+.scr::-webkit-scrollbar-thumb{background:rgba(255,255,255,.18);border-radius:4px}
+</style>
+</head>
+<body>
+
+<div class="stars" id="stars"></div>
+<button id="soundBtn" onclick="toggleSound()" title="Toggle Sound">🔊</button>
+
+<div id="app">
+
+  <!-- ════ WELCOME ════ -->
+  <div class="screen active" id="screen-welcome">
+    <div class="logo">
+      <div class="er">🔬🌿⚡🌊🧠</div>
+      <h1>Science Quest</h1>
+      <p>Year 4 · Brunei Primary School</p>
+    </div>
+    <div class="card">
+      <div class="ig">
+        <label>👤 Your Name</label>
+        <input type="text" id="playerName" placeholder="Enter your name here…" maxlength="24" onkeydown="if(event.key==='Enter')goToTopics()"/>
+      </div>
+      <button class="btn btn-primary" onclick="goToTopics()">Let's Go! 🚀</button>
+    </div>
+    <div class="brand-footer">
+      An initiative by <strong>Tr. Salfa</strong><br>
+      SR Perpindahan Kg. Lambak Kanan Jalan 10, Cluster 3
+    </div>
+  </div>
+
+  <!-- ════ TOPICS ════ -->
+  <div class="screen" id="screen-topics">
+    <div class="topics-hd">
+      <h2>📚 Choose a Topic</h2>
+      <p id="welcomeMsg">Pick a topic to start practicing!</p>
+    </div>
+    <div class="scr" style="margin-top:10px">
+      <div class="topic-grid" id="topicGrid"></div>
+    </div>
+    <div class="brand-footer">
+      An initiative by <strong>Tr. Salfa</strong> · SR Perpindahan Kg. Lambak Kanan Jalan 10, Cluster 3
+    </div>
+  </div>
+
+  <!-- ════ QUIZ ════ -->
+  <div class="screen" id="screen-quiz">
+    <div class="quiz-header">
+      <button class="backbtn" onclick="confirmBack()">⬅</button>
+      <div class="qbadge" id="quizBadge">Topic</div>
+      <div class="qcnt" id="qcnt">Q 1/8</div>
+    </div>
+
+    <div class="scorestrip">
+      <div class="schip sg"><div class="sv" id="sc0">0</div><div class="sl">✅ Correct</div></div>
+      <div class="schip sy"><div class="sv" id="sc1">0</div><div class="sl">🔥 Streak</div></div>
+      <div class="schip sb"><div class="sv" id="sc2">–</div><div class="sl">⚡ Avg s</div></div>
+    </div>
+
+    <div class="timer-wrap">
+      <div class="tbar-bg"><div class="tbar" id="tbar"></div></div>
+      <div class="tnum" id="tnum">30</div>
+    </div>
+
+    <!-- Two-column on desktop, single column on mobile -->
+    <div class="qbody">
+      <div class="qleft">
+        <div class="qcard"><div class="qtext" id="qtext">Loading…</div></div>
+        <div class="opts" id="opts"></div>
+      </div>
+      <div class="qright">
+        <div class="fbcard" id="fbcard">
+          <div class="fbe" id="fbe"></div>
+          <div class="fbt" id="fbt"></div>
+          <div class="fbtx" id="fbtx"></div>
+        </div>
+        <div class="nxtwrap" id="nxtwrap">
+          <button class="btn btn-primary" onclick="nextQ()">Next Question ➡</button>
+          <div class="hint">Press Space or Enter to continue</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════ RESULT ════ -->
+  <div class="screen" id="screen-result">
+    <div class="res-hero">
+      <div class="rtrophy" id="rtrophy">🏆</div>
+      <div class="rname" id="rname"></div>
+      <div class="rscore" id="rscore"></div>
+      <div class="rsub" id="rsub"></div>
+    </div>
+    <div class="sgrid">
+      <div class="sbox sg"><div class="sv" id="r0">0</div><div class="sl">Correct</div></div>
+      <div class="sbox sb"><div class="sv" id="r1">0</div><div class="sl">Wrong</div></div>
+      <div class="sbox sy"><div class="sv" id="r2">–</div><div class="sl">Avg Speed (s)</div></div>
+      <div class="sbox sp"><div class="sv" id="r3">0</div><div class="sl">Best Streak</div></div>
+    </div>
+    <div class="ibanner" id="ibanner">
+      <div class="ibe" id="ibe"></div>
+      <div class="ibt" id="ibt"></div>
+      <div class="ibtx" id="ibtx"></div>
+    </div>
+    <div class="btnrow">
+      <button class="btn btn-secondary" onclick="goToTopics()" style="flex:1">📚 Topics</button>
+      <button class="btn btn-primary"   onclick="retryTopic()" style="flex:1">🔄 Try Again</button>
+    </div>
+    <div class="brand-footer" style="margin-top:18px">
+      An initiative by <strong>Tr. Salfa</strong> · SR Perpindahan Kg. Lambak Kanan Jalan 10, Cluster 3
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ── WEB AUDIO SOUND ENGINE ────────────────────────── */
+let actx=null, sndOn=true;
+function ac(){if(!actx)actx=new(window.AudioContext||window.webkitAudioContext)();return actx;}
+function toggleSound(){sndOn=!sndOn;document.getElementById('soundBtn').textContent=sndOn?'🔊':'🔇';}
+function beep(type){
+  if(!sndOn)return;
+  try{
+    const c=ac();
+    if(type==='correct'){
+      // Cheerful ascending chime
+      [[523.25,0,.32],[659.25,.09,.28],[783.99,.18,.26],[1046.5,.27,.35]].forEach(([f,t,dur])=>{
+        const o=c.createOscillator(),g=c.createGain();
+        o.connect(g);g.connect(c.destination);o.type='sine';o.frequency.value=f;
+        g.gain.setValueAtTime(0,c.currentTime+t);
+        g.gain.linearRampToValueAtTime(.32,c.currentTime+t+.03);
+        g.gain.exponentialRampToValueAtTime(.001,c.currentTime+t+dur);
+        o.start(c.currentTime+t);o.stop(c.currentTime+t+dur+.02);
+      });
+    }else if(type==='wrong'){
+      // Descending sad tones
+      [[320,0,.22],[240,.14,.22],[170,.28,.22]].forEach(([f,t,dur])=>{
+        const o=c.createOscillator(),g=c.createGain();
+        o.connect(g);g.connect(c.destination);o.type='sawtooth';o.frequency.value=f;
+        g.gain.setValueAtTime(0,c.currentTime+t);
+        g.gain.linearRampToValueAtTime(.22,c.currentTime+t+.04);
+        g.gain.exponentialRampToValueAtTime(.001,c.currentTime+t+dur);
+        o.start(c.currentTime+t);o.stop(c.currentTime+t+dur+.02);
+      });
+    }else if(type==='timeout'){
+      // Double alarm beep
+      [0,.22].forEach(t=>{
+        const o=c.createOscillator(),g=c.createGain();
+        o.connect(g);g.connect(c.destination);o.type='square';o.frequency.value=430;
+        g.gain.setValueAtTime(0,c.currentTime+t);
+        g.gain.linearRampToValueAtTime(.18,c.currentTime+t+.02);
+        g.gain.exponentialRampToValueAtTime(.001,c.currentTime+t+.18);
+        o.start(c.currentTime+t);o.stop(c.currentTime+t+.2);
+      });
+    }else if(type==='tick'){
+      const o=c.createOscillator(),g=c.createGain();
+      o.connect(g);g.connect(c.destination);o.type='sine';o.frequency.value=900;
+      g.gain.setValueAtTime(0,c.currentTime);
+      g.gain.linearRampToValueAtTime(.14,c.currentTime+.008);
+      g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.06);
+      o.start(c.currentTime);o.stop(c.currentTime+.07);
+    }else if(type==='fanfare'){
+      [523,659,784,1047,1319].forEach((f,i)=>{
+        const o=c.createOscillator(),g=c.createGain();
+        o.connect(g);g.connect(c.destination);o.type='triangle';o.frequency.value=f;
+        const t=i*.09;
+        g.gain.setValueAtTime(0,c.currentTime+t);
+        g.gain.linearRampToValueAtTime(.38,c.currentTime+t+.04);
+        g.gain.exponentialRampToValueAtTime(.001,c.currentTime+t+.42);
+        o.start(c.currentTime+t);o.stop(c.currentTime+t+.45);
+      });
+    }else if(type==='click'){
+      const o=c.createOscillator(),g=c.createGain();
+      o.connect(g);g.connect(c.destination);o.type='sine';o.frequency.value=620;
+      g.gain.setValueAtTime(0,c.currentTime);
+      g.gain.linearRampToValueAtTime(.11,c.currentTime+.007);
+      g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.055);
+      o.start(c.currentTime);o.stop(c.currentTime+.06);
+    }
+  }catch(e){}
+}
+
+/* ── STARS ───────────────────────────────────────── */
+(()=>{const c=document.getElementById('stars');for(let i=0;i<70;i++){const s=document.createElement('div');s.className='star';const z=Math.random()*3+1;s.style.cssText=`width:${z}px;height:${z}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${Math.random()*3+2}s;animation-delay:${Math.random()*6}s`;c.appendChild(s);}})();
+
+/* ── TOPIC DATA ──────────────────────────────────── */
+const TOPICS=[
+  {id:'T1_1',theme:1,icon:'🌿',name:'Living Things',sub:'Life processes, needs & human body',questions:[
+    {q:"Which of these is a life process shown by living things?",opts:["Rusting","Growth","Melting","Breaking"],ans:1,exp:"Growth is one of the five basic life processes of living things — Movement, Feeding, Growth, Reproduction, and Response. Rusting and melting happen to non-living things."},
+    {q:"What do ANIMALS need to stay alive?",opts:["Food, air and water","Light, air and soil","Sunlight, water and soil","Food and light only"],ans:0,exp:"Animals need food, air, and water to survive. Plants also need these but additionally need light to make their own food through photosynthesis."},
+    {q:"Which organ is used for the sense of SMELL?",opts:["Eyes","Ears","Nose","Skin"],ans:2,exp:"The nose is our sense organ for smell. The five sense organs are: Eyes (sight), Ears (hearing), Nose (smell), Tongue (taste), and Skin (touch)."},
+    {q:"Why do we need measuring instruments like thermometers?",opts:["They look more scientific","Our senses have limitations and are not always accurate","They are cheaper","They are colourful"],ans:1,exp:"Our senses have limitations — fingers can't accurately measure temperature. Instruments give us precise, reliable measurements."},
+    {q:"Which part of a flowering plant produces seeds?",opts:["Roots","Stems","Leaves","Flowers"],ans:3,exp:"Flowers are the reproductive part of a plant. After pollination, flowers develop into fruits which contain seeds to begin a new cycle."},
+    {q:"What do PLANTS specifically need that animals do not?",opts:["Water","Air","Light","Nutrients"],ans:2,exp:"Plants need light to make their own food through photosynthesis. Animals must eat food, but plants make their own using sunlight."},
+    {q:"Which sense organ detects touch and temperature?",opts:["Tongue","Eyes","Skin","Ears"],ans:2,exp:"The skin is our sense organ for touch. It detects texture, pressure, heat, cold, and pain across the entire body."},
+    {q:"Which of these is NOT a main EXTERNAL part of a flowering plant?",opts:["Roots","Stem","Cells","Leaves"],ans:2,exp:"Cells are microscopic internal structures, not visible external parts. The main external parts of a plant are: roots, stem, leaves, flowers, and fruits."},
+  ]},
+  {id:'T1_2',theme:1,icon:'🦋',name:'Variety & Classification',sub:'Grouping and classifying organisms',questions:[
+    {q:"Why do scientists classify living things?",opts:["To make them look nice","To study them more systematically","To count them easily","To name them after scientists"],ans:1,exp:"Classification helps scientists study living things systematically by grouping organisms with similar features together, making them easier to compare and study."},
+    {q:"Which group of animals has a BACKBONE?",opts:["Insects","Worms","Fish","Crabs"],ans:2,exp:"Fish are vertebrates — animals WITH a backbone. Insects, worms, and crabs are invertebrates — animals WITHOUT a backbone."},
+    {q:"Plants can be grouped by size into…",opts:["By colour only","Trees, shrubs and herbs","By their names only","By weight only"],ans:1,exp:"Plants can be grouped as trees (large, woody), shrubs (smaller, woody), and herbs (soft stems). They can also be sorted as flowering or non-flowering."},
+    {q:"Which feature is key for classifying animals into two main groups?",opts:["Favourite food","Presence or absence of a backbone","How fast they run","Their colour"],ans:1,exp:"The key feature is whether an animal has a backbone or not — vertebrates (with backbone) and invertebrates (without backbone)."},
+    {q:"'Variety within a group' is best shown by…",opts:["Fish and birds are different","Some dogs are big, some are small — all still dogs","Plants and animals are different","Rocks and water are different"],ans:1,exp:"Variety within a group means differences among members of the SAME group. Dogs of different sizes are all dogs but show variety within the group."},
+    {q:"Flowering plants can be reclassified based on…",opts:["Root colour","Size and shape of leaves and seeds","Smell of roots","Underground stem weight"],ans:1,exp:"Flowering plants can be reclassified using observable features such as the size, shape, and colour of their leaves and seeds."},
+  ]},
+  {id:'T1_3',theme:1,icon:'🧱',name:'Materials & Properties',sub:'Properties of non-living materials',questions:[
+    {q:"Which property describes how easily a material BENDS without breaking?",opts:["Hardness","Strength","Flexibility","Solubility"],ans:2,exp:"Flexibility is the ability of a material to bend without breaking. Rubber and fabric are examples of flexible materials."},
+    {q:"Which material is the BEST conductor of heat?",opts:["Wood","Plastic","Metal","Rubber"],ans:2,exp:"Metals are good conductors of heat — they allow heat to flow through easily. Wood, plastic, and rubber are poor conductors (insulators)."},
+    {q:"Which property tells us if a substance can DISSOLVE in water?",opts:["Hardness","Flexibility","Solubility","Strength"],ans:2,exp:"Solubility describes whether a material dissolves in water. Sugar is soluble (dissolves), sand is insoluble (does not dissolve)."},
+    {q:"Why is metal used to make cooking POTS?",opts:["It is flexible","It is a good conductor of heat","It floats on water","It dissolves in water"],ans:1,exp:"Metal is used for cooking pots because it conducts heat well, allowing heat to transfer quickly and evenly to food inside."},
+    {q:"Which material would you choose for a RAINCOAT?",opts:["Metal","Glass","Fabric / Rubber","Wood"],ans:2,exp:"Fabric or rubber is used for raincoats because it is waterproof, flexible, and lightweight — perfect for keeping rain out!"},
+    {q:"Which of these is a HARD material?",opts:["Rubber","Fabric","Metal","Sponge"],ans:2,exp:"Metal is hard — it resists scratching and deformation. Rubber and fabric are soft and flexible, while sponge is easily compressed."},
+  ]},
+  {id:'T2_1',theme:2,icon:'⚡',name:'Energy',sub:'Forms and conversion of energy',questions:[
+    {q:"What does energy allow things to do?",opts:["Change colour","Work or move","Stay still forever","Become invisible"],ans:1,exp:"Energy makes things work or move. Without energy, nothing can happen — machines won't work and life processes stop."},
+    {q:"Which is the MAIN source of heat energy on Earth?",opts:["Fire","Electricity","The Sun","Friction"],ans:2,exp:"The Sun is the main source of heat energy on Earth. It provides heat and light that supports all life on our planet."},
+    {q:"Rubbing palms together produces what type of energy?",opts:["Electrical energy","Sound energy","Heat energy from friction","Light energy"],ans:2,exp:"Rubbing palms creates heat energy through FRICTION — produced when two surfaces rub against each other."},
+    {q:"A wound-up spring toy stores which type of energy?",opts:["Heat energy","Stored (potential) energy","Sound energy","Light energy"],ans:1,exp:"A wound-up spring stores potential (stored) energy. When released, this converts into movement energy."},
+    {q:"When a candle burns, what energy conversion occurs?",opts:["Sound to light","Stored chemical energy → heat and light","Electrical to movement","Heat to electricity"],ans:1,exp:"A burning candle converts stored chemical energy into heat energy and light energy — that's why it glows and feels warm!"},
+    {q:"Living things need energy for…",opts:["Only running","ALL life processes: growth, reproduction, movement, etc.","Only eating","Making sounds only"],ans:1,exp:"Living things need energy for ALL life processes — movement, feeding, growth, reproduction, and responding to changes in the environment."},
+    {q:"A torch is an example of which energy conversion?",opts:["Ice melting","Electrical energy → light energy","A rock falling","Wind blowing leaves"],ans:1,exp:"A torch converts electrical energy (from batteries) into light energy. This is energy conversion from one form to another."},
+  ]},
+  {id:'T2_2',theme:2,icon:'🌡️',name:'Heat',sub:'Temperature, flow of heat & conductors',questions:[
+    {q:"Temperature measures the degree of…",opts:["Weight of an object","Hotness or coldness","Speed of movement","Amount of light"],ans:1,exp:"Temperature is a measure of the degree of hotness or coldness. We measure it in degrees Celsius (°C) using a thermometer."},
+    {q:"In which direction does heat ALWAYS flow?",opts:["Cold to hot","Hot to cold","In all directions equally","It doesn't flow"],ans:1,exp:"Heat ALWAYS flows from HOT to COLD. A hot cup of tea cools down because heat flows from the tea to the cooler surrounding air."},
+    {q:"Which material is a POOR conductor of heat?",opts:["Iron","Copper","Wood","Steel"],ans:2,exp:"Wood is a poor conductor (insulator) — it doesn't allow heat to flow easily. That's why wooden spoons don't get hot in hot soup!"},
+    {q:"Why are mercury thermometers avoided at school?",opts:["They're too expensive","Mercury is toxic and dangerous — safety reasons","They show wrong readings","They're too big"],ans:1,exp:"Mercury thermometers are avoided for SAFETY reasons — mercury is toxic and harmful if the glass breaks. We use digital or strip thermometers instead."},
+    {q:"Normal human body temperature is approximately…",opts:["20°C","37°C","50°C","100°C"],ans:1,exp:"Normal human body temperature is approximately 37°C. A clinical thermometer is used to measure it accurately."},
+    {q:"A cold spoon placed in hot soup — what happens?",opts:["The soup gets colder immediately","The spoon warms as heat flows from soup to spoon","Nothing happens","The spoon melts"],ans:1,exp:"Heat flows from the HOT soup to the COLD spoon. The spoon warms up (gains heat) while the soup slightly cools (loses heat)."},
+    {q:"Why is WOOD used for pot handles instead of metal?",opts:["Wood is cheaper","Wood is a poor conductor — the handle stays cool","Wood conducts heat well","Wood is stronger"],ans:1,exp:"Wood is a poor conductor of heat, so it doesn't let heat travel to your hand. This keeps the handle cool and safe to hold!"},
+  ]},
+  {id:'T3_1',theme:3,icon:'🌱',name:'Life Cycle of Plants',sub:'Plant life cycles & vegetative growth',questions:[
+    {q:"What is GERMINATION?",opts:["A plant producing flowers","Growth from a seed into a seedling","Fruits ripening","Seeds being dispersed"],ans:1,exp:"Germination is when a seed sprouts and grows into a seedling — the very first stage in the life cycle of a flowering plant!"},
+    {q:"What is the correct ORDER of a plant's life cycle?",opts:["Flower→Seed→Seedling→Fruit","Seed→Seedling→Flower→Fruit→Seed dispersal","Fruit→Flower→Seed→Seedling","Seedling→Fruit→Seed→Flower"],ans:1,exp:"The correct order: Seed → Seedling (germination) → Adult plant with Flowers → Fruit develops → Seeds dispersed → New cycle begins!"},
+    {q:"Which condition is NOT needed for healthy plant growth?",opts:["Sunlight","Darkness","Water","Good soil"],ans:1,exp:"Plants need sunlight, water, good soil, and nutrients. Darkness prevents healthy growth as plants need light for photosynthesis."},
+    {q:"Which plant can grow WITHOUT seeds?",opts:["Mango","Potato","Grass from seeds","Rose from seeds"],ans:1,exp:"Potatoes grow from their own tubers (underground stems) — no seeds needed. Other examples: onion, ginger, banana, and bryophyllum."},
+    {q:"After a flower is pollinated, what does it become?",opts:["A new leaf","A root","A fruit containing seeds","Another flower"],ans:2,exp:"After pollination, a flower develops into a fruit which contains seeds. The seeds can then be dispersed to start the next cycle!"},
+    {q:"Seed dispersal is important because…",opts:["It makes seeds taste better","It spreads seeds to new places so a new cycle can begin","It makes seeds harder","It stops plants from growing"],ans:1,exp:"Seed dispersal spreads seeds away from the parent plant to new locations where they can germinate and grow without competition for resources."},
+  ]},
+  {id:'T3_2',theme:3,icon:'💧',name:'Water',sub:'States of water, solutions & water cycle',questions:[
+    {q:"What are the THREE states of water?",opts:["Solid, liquid, steam","Solid, liquid, gas","Ice, water, mist","Frozen, flowing, steamy"],ans:1,exp:"Water exists in three states: SOLID (ice), LIQUID (water), and GAS (water vapour). These are the three states of matter for water."},
+    {q:"What happens when water is heated to boiling point?",opts:["It freezes","It melts","It boils and turns into gas (water vapour)","It condenses"],ans:2,exp:"When water is heated to 100°C, it converts from liquid to gas (water vapour). This process is called boiling or evaporation."},
+    {q:"Which substance is SOLUBLE in water?",opts:["Sand","Rock","Sugar","Oil"],ans:2,exp:"Sugar dissolves in water to form a solution — it is soluble. Sand and rock are insoluble, and oil doesn't mix with water."},
+    {q:"What process turns water vapour BACK into liquid water?",opts:["Melting","Freezing","Condensation","Evaporation"],ans:2,exp:"Condensation is when water vapour (gas) cools down and turns back into liquid water. You see this on cold glass or windows on a humid day!"},
+    {q:"Increasing TEMPERATURE helps water…",opts:["Dissolve less solid","Dissolve more solid","Have no effect","Freeze faster"],ans:1,exp:"Higher temperature makes most solids dissolve MORE easily. Hot water dissolves sugar faster than cold water — try it yourself!"},
+    {q:"In the water cycle, plants release water to the atmosphere through their…",opts:["Roots","Leaves","Seeds","Flowers"],ans:1,exp:"Plants release water vapour through their leaves into the atmosphere. This water vapour rises, cools, condenses into clouds, and falls as rain."},
+    {q:"If evaporation stopped, what would happen to rainfall?",opts:["Rainfall would increase","Clouds can't form → rainfall would decrease or stop","Nothing would change","Plants would grow faster"],ans:1,exp:"Evaporation turns liquid water into vapour that rises to form clouds. Without evaporation, no clouds form → no rain → all plants and animals suffer!"},
+  ]},
+  {id:'T4_1',theme:4,icon:'🦷',name:'Personal Health',sub:'Dental health, diet & nutrition',questions:[
+    {q:"What CAUSES tooth decay?",opts:["Eating too much fruit","Germs in plaque on teeth","Drinking too much water","Eating carrots"],ans:1,exp:"Tooth decay is caused by GERMS (bacteria) found in PLAQUE — a sticky film on teeth. These germs produce acids that damage tooth enamel."},
+    {q:"Which food group is the MAIN source of energy?",opts:["Vitamins","Minerals","Proteins","Carbohydrates"],ans:3,exp:"Carbohydrates (rice, bread, noodles) are the main source of energy. They are 'Go' foods — they give you energy to go and play!"},
+    {q:"Which nutrient is needed for GROWTH and REPAIR?",opts:["Carbohydrates","Protein","Fat","Vitamins"],ans:1,exp:"Protein is needed for growth and repair of the body. Meat, fish, eggs, and beans are rich in protein — we call these 'Grow' foods!"},
+    {q:"An unbalanced diet can lead to…",opts:["Better concentration","Obesity and diabetes","Stronger bones","Faster running"],ans:1,exp:"Too much or the wrong types of food can cause health problems like obesity (being overweight) and diabetes (blood sugar problems)."},
+    {q:"A BALANCED diet includes…",opts:["Only carbohydrates","Only vegetables","All food groups in the right amounts, including water and roughage","Only proteins and fats"],ans:2,exp:"A balanced diet includes the right amounts of carbohydrates, proteins, fats, vitamins, minerals, water, and roughage (fibre). Go, Grow, and Glow foods!"},
+    {q:"Which are 'GLOW' foods that keep the body healthy?",opts:["Rice","Chicken","Vegetables and fruits","Butter"],ans:2,exp:"Vegetables and fruits are 'Glow' foods — packed with vitamins and minerals that keep you healthy and protect from disease!"},
+    {q:"Why is regular exercise important?",opts:["It makes us tired permanently","It maintains a healthy body and helps use energy","It is only for athletes","It removes all energy"],ans:1,exp:"Regular exercise maintains a healthy body, strengthens muscles and bones, keeps the heart healthy, and uses up extra energy to prevent obesity."},
+  ]},
+  {id:'T5_1',theme:5,icon:'🧬',name:'Human Body Systems',sub:'Digestive, transport, breathing, movement & nervous',questions:[
+    {q:"What is the GROSS FUNCTION of the digestive system?",opts:["Pump blood around the body","Break down food into smaller soluble pieces","Take in oxygen","Control other body systems"],ans:1,exp:"The digestive system breaks food into smaller and smaller pieces until it becomes soluble, so the body can absorb and use the nutrients for energy and growth."},
+    {q:"Which organ PUMPS blood around the body?",opts:["Lungs","Stomach","Heart","Brain"],ans:2,exp:"The HEART is the pump of the transport system. It continuously pumps blood through blood vessels to carry food and oxygen to all body parts."},
+    {q:"What gas do we breathe IN that our body needs?",opts:["Carbon dioxide","Nitrogen","Oxygen","Water vapour"],ans:2,exp:"We breathe in OXYGEN, which the body uses to produce energy from food. We breathe out more carbon dioxide as a waste product."},
+    {q:"The skeleton and muscles work together in the…",opts:["Digestive system","Nervous system","Movement system","Breathing system"],ans:2,exp:"The MOVEMENT SYSTEM consists of the skeleton (bones) and muscles. Muscles shorten and stretch to move the bones at joints."},
+    {q:"Which part of the nervous system CONTROLS all other systems?",opts:["Spinal cord","Nerves","Brain","Sense organs"],ans:2,exp:"The BRAIN controls all other body systems. It processes information from sense organs and sends instructions through the spinal cord and nerves."},
+    {q:"The main parts of the BREATHING system include…",opts:["Heart, blood, blood vessels","Mouth, stomach, intestines","Windpipe, lungs, and blood vessels","Brain, spinal cord, nerves"],ans:2,exp:"The breathing system: windpipe (carries air), lungs (where O₂/CO₂ exchange happens), and blood vessels (carry oxygen-rich blood away from lungs)."},
+    {q:"What does the TRANSPORT system carry to ALL parts of the body?",opts:["Only oxygen","Only food","Both food AND oxygen","Only carbon dioxide"],ans:2,exp:"The transport system carries both FOOD and OXYGEN to all parts of the body. Blood is the vehicle, and the heart is the pump!"},
+    {q:"How many sense organs do humans have?",opts:["3","4","5","6"],ans:2,exp:"Humans have FIVE sense organs: Eyes (sight), Ears (hearing), Nose (smell), Tongue (taste), and Skin (touch/feeling). Each connects to the nervous system."},
+  ]},
+];
+
+/* ── STATE ───────────────────────────────────────── */
+let player='',currentTopic=null,cqs=[],qi=0;
+let score=0,streak=0,best=0,wrongs=0;
+let tiv=null,tl=30,qs=0,tt=0,tpq=[];
+let answered=false,prev={};
+
+/* ── NAVIGATION ──────────────────────────────────── */
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById('screen-'+id).classList.add('active');window.scrollTo(0,0);}
+
+function goToTopics(){
+  const inp=document.getElementById('playerName');
+  if(inp&&inp.value.trim())player=inp.value.trim();
+  if(!player){alert('Please enter your name first! 😊');return;}
+  document.getElementById('welcomeMsg').textContent=`Hello ${player}! Pick a topic to practice! 🌟`;
+  buildGrid(); show('topics'); beep('click');
+}
+
+function buildGrid(){
+  const g=document.getElementById('topicGrid');
+  const tn={1:'🌿 Theme 1 — Variety & Classification',2:'⚡ Theme 2 — Energy & Forces',3:'🌊 Theme 3 — Cycles',4:'💪 Theme 4 — Personal Health',5:'🧬 Theme 5 — Systems'};
+  const tlc=['','tl1','tl2','tl3','tl4','tl5'];
+  const byt={};TOPICS.forEach(t=>{if(!byt[t.theme])byt[t.theme]=[];byt[t.theme].push(t);});
+  g.innerHTML='';
+  Object.keys(byt).sort().forEach(n=>{
+    const d=document.createElement('div');d.className='tdiv';d.textContent=tn[n];g.appendChild(d);
+    byt[n].forEach(t=>{
+      const p=prev[t.id];
+      const badge=p?`<span class="tb ${tlc[t.theme]}">Last: ${p.score}/${t.questions.length}</span>`:`<span class="tb ${tlc[t.theme]}">NEW ✨</span>`;
+      const b=document.createElement('button');
+      b.className=`tbtn th${t.theme}`;
+      b.innerHTML=`<span class="ti">${t.icon}</span><div class="tnfo"><div class="tn">${t.name}</div><div class="ts">${t.sub}</div></div>${badge}`;
+      b.onclick=()=>{beep('click');startTopic(t);};
+      g.appendChild(b);
+    });
+  });
+}
+
+/* ── QUIZ ────────────────────────────────────────── */
+function startTopic(t){
+  currentTopic=t;cqs=shuffle([...t.questions]);
+  qi=0;score=0;streak=0;best=0;wrongs=0;tt=0;tpq=[];
+  document.getElementById('quizBadge').textContent=`${t.icon} ${t.name}`;
+  upStrip(); show('quiz'); loadQ();
+}
+
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=~~(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+function loadQ(){
+  if(qi>=cqs.length){showResult();return;}
+  answered=false;
+  const q=cqs[qi];
+  document.getElementById('qcnt').textContent=`Q ${qi+1}/${cqs.length}`;
+  document.getElementById('qtext').textContent=q.q;
+  const order=shuffle([0,1,2,3]);
+  q._si=order.indexOf(q.ans);
+  const og=document.getElementById('opts');og.innerHTML='';
+  const lbl=['A','B','C','D'];
+  order.forEach((oi,di)=>{
+    const b=document.createElement('button');b.className='obtn';b.dataset.di=di;
+    b.innerHTML=`<span class="olbl">${lbl[di]}</span>${q.opts[oi]}`;
+    b.onclick=()=>pick(b,di,q);og.appendChild(b);
+  });
+  document.getElementById('fbcard').classList.remove('show','correct','wrong');
+  document.getElementById('nxtwrap').classList.remove('show');
+  startTimer(q); qs=Date.now();
+}
+
+function startTimer(q){
+  clearInterval(tiv);tl=30;upTimer();
+  tiv=setInterval(()=>{
+    tl--;
+    if(tl<=5&&tl>0)beep('tick');
+    upTimer();
+    if(tl<=0){clearInterval(tiv);if(!answered)timeout(q);}
+  },1000);
+}
+
+function upTimer(){
+  const bar=document.getElementById('tbar'),num=document.getElementById('tnum');
+  bar.style.width=(tl/30*100)+'%';num.textContent=tl;
+  if(tl<=8){bar.classList.add('warn');num.classList.add('warn');}
+  else{bar.classList.remove('warn');num.classList.remove('warn');}
+}
+
+function pick(btn,di,q){
+  if(answered)return;answered=true;clearInterval(tiv);
+  const el=Math.max(1,Math.round((Date.now()-qs)/1000));
+  tpq.push(el);tt+=el;
+  const ok=(di===q._si);
+  document.querySelectorAll('.obtn').forEach((b,i)=>{b.classList.add('disabled');if(i===q._si)b.classList.add('revc');});
+  if(ok){btn.classList.add('correct');score++;streak++;if(streak>best)best=streak;beep('correct');}
+  else{btn.classList.add('wrong');streak=0;wrongs++;beep('wrong');}
+  upStrip();showFB(ok,q,el);
+}
+
+function timeout(q){
+  answered=true;
+  document.querySelectorAll('.obtn').forEach((b,i)=>{b.classList.add('disabled');if(i===q._si)b.classList.add('revc');});
+  streak=0;wrongs++;tpq.push(30);tt+=30;
+  upStrip();showFB(false,q,30,true);beep('timeout');
+}
+
+function showFB(ok,q,el,to=false){
+  const fc=document.getElementById('fbcard');
+  fc.classList.remove('correct','wrong');
+  if(to){
+    document.getElementById('fbe').textContent='⏰';
+    document.getElementById('fbt').textContent="Time's Up!";
+    document.getElementById('fbt').className='fbt wrong';
+    fc.classList.add('wrong');
+    document.getElementById('fbtx').textContent=`You ran out of time! ${q.exp}`;
+  }else if(ok){
+    const es=['🎉','⭐','🌟','🏆','🎯','💪','🔥','✨'];
+    const ms=['Amazing!','Correct!','Brilliant!','Well Done!','Superstar!','Nailed It!','Fantastic!','You Rock!'];
+    document.getElementById('fbe').textContent=es[~~(Math.random()*es.length)];
+    document.getElementById('fbt').textContent=ms[~~(Math.random()*ms.length)]+(el<=8?' ⚡ Super Fast!':'');
+    document.getElementById('fbt').className='fbt correct';
+    fc.classList.add('correct');
+    document.getElementById('fbtx').textContent=q.exp;
+  }else{
+    const we=['😢','😬','🤔','💡','📖'];
+    document.getElementById('fbe').textContent=we[~~(Math.random()*we.length)];
+    document.getElementById('fbt').textContent='Not Quite!';
+    document.getElementById('fbt').className='fbt wrong';
+    fc.classList.add('wrong');
+    document.getElementById('fbtx').textContent=`Correct answer: "${q.opts[q.ans]}". ${q.exp}`;
+  }
+  fc.classList.add('show');document.getElementById('nxtwrap').classList.add('show');
+}
+
+function upStrip(){
+  document.getElementById('sc0').textContent=score;
+  document.getElementById('sc1').textContent=streak;
+  const a=tpq.length?Math.round(tt/tpq.length):null;
+  document.getElementById('sc2').textContent=a?a+'s':'–';
+}
+
+function nextQ(){beep('click');qi++;document.getElementById('fbcard').classList.remove('show');document.getElementById('nxtwrap').classList.remove('show');loadQ();}
+
+document.addEventListener('keydown',e=>{if((e.code==='Space'||e.code==='Enter')&&document.getElementById('nxtwrap').classList.contains('show'))nextQ();});
+
+/* ── RESULTS ─────────────────────────────────────── */
+function showResult(){
+  clearInterval(tiv);
+  const tot=cqs.length,pct=~~(score/tot*100);
+  const avg=tpq.length?~~(tt/tpq.length):0;
+  let trophy,msg;
+  if(pct===100){trophy='🏆';msg="PERFECT SCORE! You're a Science Champion!";}
+  else if(pct>=80){trophy='🥇';msg=`Excellent work, ${player}!`;}
+  else if(pct>=60){trophy='🥈';msg='Good job, keep practicing!';}
+  else if(pct>=40){trophy='🥉';msg="You're getting there! Try again!";}
+  else{trophy='📚';msg='Study more and try again — you can do it!';}
+  document.getElementById('rtrophy').textContent=trophy;
+  document.getElementById('rname').textContent=`${player}'s Result`;
+  document.getElementById('rscore').textContent=`${score}/${tot}`;
+  document.getElementById('rsub').textContent=`${pct}% · ${msg}`;
+  document.getElementById('r0').textContent=score;document.getElementById('r1').textContent=wrongs;
+  document.getElementById('r2').textContent=avg+'s';document.getElementById('r3').textContent=best;
+  const p=prev[currentTopic.id];
+  const bn=document.getElementById('ibanner');
+  bn.classList.remove('up','down');
+  if(p){
+    const su=score>p.score,tu=avg<p.avgTime,imp=su||(score>=p.score&&tu);
+    if(imp){
+      bn.classList.add('up');
+      document.getElementById('ibe').textContent='🎊🌟🎊';
+      document.getElementById('ibt').textContent='IMPROVEMENT!';
+      document.getElementById('ibtx').textContent=su?`You got ${score-p.score} more correct than last time! Amazing progress!`:`Same score but ${p.avgTime-avg}s faster! Great speed improvement!`;
+      if(pct>=60){confetti();if(pct>=80)beep('fanfare');}
+    }else{
+      bn.classList.add('down');
+      document.getElementById('ibe').textContent='😢';
+      document.getElementById('ibt').textContent='Keep Trying!';
+      document.getElementById('ibtx').textContent=`You had ${p.score}/${tot} before. Review your answers and try again — you've got this!`;
+    }
+  }else{
+    bn.classList.add('up');
+    document.getElementById('ibe').textContent='⭐';
+    document.getElementById('ibt').textContent='First Attempt!';
+    document.getElementById('ibtx').textContent='Great job completing your first quiz on this topic! Practice again to improve!';
+    if(pct>=60){confetti();if(pct===100)beep('fanfare');}
+  }
+  prev[currentTopic.id]={score,avgTime:avg};
+  show('result');
+}
+
+function retryTopic(){beep('click');startTopic(currentTopic);}
+function confirmBack(){clearInterval(tiv);if(confirm('Go back to topics? Your current quiz progress will be lost.')){beep('click');goToTopics();}}
+
+/* ── CONFETTI ─────────────────────────────────────── */
+function confetti(){
+  const cs=['#ffd93d','#ff6b6b','#6bcb77','#4d96ff','#c77dff','#fff'];
+  for(let i=0;i<75;i++){
+    const el=document.createElement('div');el.className='cfp';
+    const c=cs[~~(Math.random()*cs.length)],d=Math.random()*2+1.5;
+    el.style.cssText=`left:${Math.random()*100}vw;background:${c};--d:${d}s;animation-delay:${Math.random()*.6}s;width:${Math.random()*10+5}px;height:${Math.random()*10+5}px;border-radius:${Math.random()>.5?'50%':'2px'};transform:rotate(${Math.random()*360}deg)`;
+    document.body.appendChild(el);setTimeout(()=>el.remove(),(d+.7)*1000);
+  }
+}
+
+/* ── INIT ─────────────────────────────────────────── */
+show('welcome');
+</script>
+</body>
+</html>
